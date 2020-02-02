@@ -1,35 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <EditText
+    <data>
+        <!-- 需要的viewModel, 通过mBind.vm = mViewModel注入 -->
+        <variable
+            name="model"
+            type="com.luckyboy.jetpacklearn.viewmodel.LoginModel" />
+        <variable
+            name="activity"
+            type="androidx.fragment.app.FragmentActivity" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/input_user_name"
-        android:id="@+id/et_user_name"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/input_user_password"
-        android:id="@+id/et_user_pwd"
-        />
+        <!-- 监听绑定 -->
+        <EditText
+            android:id="@+id/et_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_user_name"
+            android:text="@{model.n.get()}"
+            android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
+            />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="登录"
-        android:id="@+id/btn_login"
-        />
+        <!-- 方法引用 -->
+        <EditText
+            android:id="@+id/et_user_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_user_password"
+            android:text="@{model.p.get()}"
+            android:onTextChanged="@{model::onPwdChange}"
+            />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="返回上一页"
-        android:id="@+id/btn_go_back"
-        />
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="登录"
+            android:onClick="@{()->model.login()}"
+            android:enabled="@{model.p.get().isEmpty()||model.n.get().isEmpty()? false: true}"
+            />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_go_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="返回上一页" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:onClick="@{()->activity.onBackPressed()}"
+            />
+
+
+    </LinearLayout>
+
+</layout>
