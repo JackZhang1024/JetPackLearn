@@ -24,4 +24,12 @@
         android:text="登录"
         android:id="@+id/btn_login"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="返回上一页"
+        android:id="@+id/btn_go_back"
+        />
+
 </LinearLayout>

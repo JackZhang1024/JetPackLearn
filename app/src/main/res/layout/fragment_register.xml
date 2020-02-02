@@ -24,4 +24,12 @@
         android:text="注册"
         android:id="@+id/btn_register"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="返回上一页"
+        android:id="@+id/btn_go_back"
+        />
+
 </LinearLayout>
