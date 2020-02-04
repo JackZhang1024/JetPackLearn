@@ -2,14 +2,17 @@ package com.luckyboy.jetpacklearn.viewmodel
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.ObservableField
+import androidx.lifecycle.ViewModel
 import com.luckyboy.jetpacklearn.common.BaseConstant
 import com.luckyboy.jetpacklearn.ui.HomeActivity
 
 // LoginModel主要负责登录逻辑处理和 登录 密码 两个输入框内容改变的时候 数据更新的处理
 
-class LoginModel constructor(name: String, pwd: String, context: Context) {
+//class LoginModel constructor(name: String, pwd: String, context: Context) {
+class LoginModel constructor(name: String, pwd: String, context: Context):ViewModel(){
 
     val n = ObservableField<String>(name)
     val p = ObservableField<String>(pwd)

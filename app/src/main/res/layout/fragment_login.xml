@@ -24,9 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_user_name"
-            android:text="@{model.n.get()}"
+            android:text="@={model.n.get()}"
             android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
             />
+        <!-- android:text="@{model.n.get()}" -->
 
         <!-- 方法引用 -->
         <EditText
@@ -61,6 +62,18 @@
             android:onClick="@{()->activity.onBackPressed()}"
             />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_user_name"
+            android:height="40dp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_change_name"
+            android:text="更新名称"
+            />
 
     </LinearLayout>
 
