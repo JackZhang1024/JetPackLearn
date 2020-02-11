@@ -1,51 +1,74 @@
 package com.luckyboy.jetpacklearn.viewmodel
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.luckyboy.jetpacklearn.common.BaseConstant
-import com.luckyboy.jetpacklearn.ui.HomeActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
+import com.luckyboy.jetpacklearn.common.BaseApplication
+import com.luckyboy.jetpacklearn.db.RepositoryProvider
+import com.luckyboy.jetpacklearn.db.data.Shoe
+import com.luckyboy.jetpacklearn.db.data.User
+import com.luckyboy.jetpacklearn.db.repository.UserRepository
 
 // LoginModel主要负责登录逻辑处理和 登录 密码 两个输入框内容改变的时候 数据更新的处理
 
 //class LoginModel constructor(name: String, pwd: String, context: Context) {
-class LoginModel constructor(name: String, pwd: String, context: Context):ViewModel(){
+class LoginModel constructor(private val repository: UserRepository) : ViewModel() {
 
-    val n = ObservableField<String>(name)
-    val p = ObservableField<String>(pwd)
+    private val TAG: String by lazy {
+        this::class.java.simpleName
+    }
 
-    var context: Context = context
-
+    val n = MutableLiveData<String>("")
+    val p = MutableLiveData<String>("")
 
     /**
      * 用户名改变回调的函数
      */
-    fun onNameChanged(s:CharSequence){
-        n.set(s.toString())
+    fun onNameChanged(s: CharSequence) {
+        n.value = s.toString()
     }
 
     /**
      * 密码改变的回调函数
      */
-    fun onPwdChange(s:CharSequence, start:Int, before:Int, count:Int){
-        p.set(s.toString())
+    fun onPwdChange(s: CharSequence, start: Int, before: Int, count: Int) {
+        p.value = s.toString()
     }
 
-    fun login() {
-        if (n.get().equals(BaseConstant.USER_NAME)
-            && p.get().equals(BaseConstant.USER_PWD)
-        ) {
-            Toast.makeText(context, "账号密码正确", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, HomeActivity::class.java)
-            context.startActivity(intent)
-        } else {
-            Toast.makeText(context, "账号或密码不正确", Toast.LENGTH_SHORT).show();
+    // 登录查询是否存在这个用户
+    fun login(): LiveData<User?>? {
+        val pwd = p.value!!
+        val account = n.value!!
+        return repository.login(account, pwd)
+    }
+
+    // 第一次启动的是否使用
+    fun onFirstLaunch(): String {
+        val context = BaseApplication.context
+        context.assets.open("shoes.json").use {
+            JsonReader(it.reader()).use {
+                val shoeType = object : TypeToken<List<Shoe>>() {}.type
+                val shoeList: List<Shoe> = Gson().fromJson(it, shoeType)
+
+                val shoeDao = RepositoryProvider.providerShoeRepository(context)
+                shoeDao.insertShoes(shoeList)
+
+                // todo 不清楚干什么用的？？
+                for (i in 0..2) {
+                    for (shoe in shoeList) {
+                        shoe.id += shoeList.size
+                    }
+                    shoeDao.insertShoes(shoeList)
+                }
+            }
         }
+        Log.e(TAG, "初始化数据成功")
+        return "初始化数据成功!"
     }
-
 
 }
 

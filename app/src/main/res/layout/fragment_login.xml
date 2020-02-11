@@ -11,6 +11,9 @@
         <variable
             name="activity"
             type="androidx.fragment.app.FragmentActivity" />
+        <variable
+            name="isEnable"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -24,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_user_name"
-            android:text="@={model.n.get()}"
+            android:text="@={model.n}"
             android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
             />
         <!-- android:text="@{model.n.get()}" -->
@@ -35,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/input_user_password"
-            android:text="@{model.p.get()}"
+            android:text="@{model.p}"
             android:onTextChanged="@{model::onPwdChange}"
             />
 
@@ -44,9 +47,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="登录"
-            android:onClick="@{()->model.login()}"
-            android:enabled="@{model.p.get().isEmpty()||model.n.get().isEmpty()? false: true}"
+            android:enabled="@{isEnable}"
             />
+<!-- android:onClick="@{()->model.login()}"-->
+<!-- android:enabled="@{model.p.isEmpty()||model.n.isEmpty()? false: true}"-->
 
         <Button
             android:id="@+id/btn_go_back"
@@ -73,6 +77,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_change_name"
             android:text="更新名称"
+            />
+
+        <Button
+            android:id="@+id/btn_change_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="修改头像"
             />
 
     </LinearLayout>

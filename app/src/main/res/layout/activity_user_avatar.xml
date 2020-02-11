@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="user"
+            type="com.luckyboy.jetpacklearn.db.data.User"
+        />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/glide_placeholder"
+            app:imageTransFromUrl="@{user.headImage}"
+            />
+
+        <Button
+            android:id="@+id/btn_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置头像" />
+
+    </LinearLayout>
+</layout>

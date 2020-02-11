@@ -1,35 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <EditText
+    <data>
+          <!-- 需要的viewModel, 通过mBinding.vm = mViewModel注入  -->
+          <variable
+              name="model"
+              type="com.luckyboy.jetpacklearn.viewmodel.RegisterModel" />
+
+          <variable
+              name="activity"
+              type="androidx.fragment.app.FragmentActivity" />
+
+          <variable
+              name="isEnable"
+              type="Boolean"
+              />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/input_user_name"
-        android:id="@+id/et_user_name"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/input_user_password"
-        android:id="@+id/et_user_pwd"
-        />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_user_email"
+            android:id="@+id/et_user_email"
+            android:onTextChanged="@{(text, start, before, count)->model.onEmailChanged(text)}"
+            android:text="@{model.mail}"
+            />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="注册"
-        android:id="@+id/btn_register"
-        />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_user_name"
+            android:id="@+id/et_user_name"
+            android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
+            android:text="@{model.n}"
+            />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="返回上一页"
-        android:id="@+id/btn_go_back"
-        />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/input_user_password"
+            android:id="@+id/et_user_pwd"
+            android:onTextChanged="@{(text, start, before, count)->model.onPwdChanged(text)}"
+            android:text="@{model.p}"
+            />
 
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="注册"
+            android:id="@+id/btn_register"
+            android:enabled="@{isEnable}"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="返回上一页"
+            android:id="@+id/btn_go_back"
+            />
+
+    </LinearLayout>
+
+
+
+</layout>

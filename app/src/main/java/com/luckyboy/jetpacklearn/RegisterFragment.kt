@@ -8,42 +8,116 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.luckyboy.jetpacklearn.databinding.FragmentRegisterBinding
+import com.luckyboy.jetpacklearn.viewmodel.CustomViewModelProvider
+import com.luckyboy.jetpacklearn.viewmodel.RegisterModel
 import kotlinx.android.synthetic.*
 
 class RegisterFragment:Fragment(){
+
+    private var isEnable:Boolean = false
+    private val registerModel:RegisterModel by viewModels {
+        CustomViewModelProvider.providerRegisterModel(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false);
+       val binding:FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+       initData(binding)
+        onSubscribeUi(binding)
+        return binding.root
     }
 
-    lateinit var etUserName:EditText
-    lateinit var btnRegister:Button
-    lateinit var btnGoBack:Button
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // SafeArgs的使用
+    private fun initData(binding: FragmentRegisterBinding){
         val safeVarargs:RegisterFragmentArgs by navArgs()
         val email = safeVarargs.email
-        etUserName = view.findViewById(R.id.et_user_name)
-        if (!TextUtils.isEmpty(email)){
-            etUserName.setText(email)
+        binding.model?.mail?.value = email
+
+        binding.model = registerModel
+        binding.isEnable = isEnable
+        binding.activity = activity
+    }
+
+    private fun onSubscribeUi(binding: FragmentRegisterBinding){
+        binding.btnRegister.setOnClickListener {
+            registerModel.register()
+//            var bundle
+            // 进入到主页HomeActivity
+
         }
-        btnRegister = view.findViewById(R.id.btn_register)
-        btnGoBack = view.findViewById(R.id.btn_go_back)
-        btnRegister.setOnClickListener {
-            Toast.makeText(context, "注册功能没完成", Toast.LENGTH_SHORT).show()
+        binding.btnGoBack.setOnClickListener {
+            findNavController().popBackStack()
         }
-        btnGoBack.setOnClickListener {
-           findNavController().popBackStack()
-        }
+        registerModel.p.observe(viewLifecycleOwner, Observer {
+            binding.isEnable = it.isNotEmpty()
+                    && registerModel.n.value!!.isNotEmpty()
+                    && registerModel.mail.value!!.isNotEmpty()
+        })
+        registerModel.n.observe(viewLifecycleOwner, Observer {
+            binding.isEnable = it.isNotEmpty()
+                    && registerModel.p.value!!.isNotEmpty()
+                    && registerModel.mail.value!!.isNotEmpty()
+        })
+        registerModel.mail.observe(viewLifecycleOwner, Observer {
+            binding.isEnable = it.isNotEmpty()
+                    && registerModel.n.value!!.isNotEmpty()
+                    && registerModel.p.value!!.isNotEmpty()
+        })
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
