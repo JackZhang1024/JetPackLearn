@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.luckyboy.jetpacklearn.common.BaseConstant
+import com.luckyboy.jetpacklearn.utils.AppPrefsUtils
 
 // https://www.cnblogs.com/figozhg/archive/2017/04/02/6659075.html
 class WelcomeFragment:Fragment(){
@@ -38,7 +39,8 @@ class WelcomeFragment:Fragment(){
                     popExit = R.anim.common_slide_out_right
                 }
             }
-            val name = "Jack"
+//            val name = "Jack"
+            var name = AppPrefsUtils.getString(BaseConstant.SP_USER_NAME)
             // Navigation传递参数
             val bundle = Bundle()
             bundle.putString(BaseConstant.ARG_NAME, name)

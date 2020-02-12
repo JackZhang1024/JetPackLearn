@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.luckyboy.jetpacklearn.common.BaseConstant
 import com.luckyboy.jetpacklearn.databinding.FragmentLoginBinding
 import com.luckyboy.jetpacklearn.ui.HomeActivity
+import com.luckyboy.jetpacklearn.ui.HostActivity
 import com.luckyboy.jetpacklearn.ui.UserAvatarActivity
 import com.luckyboy.jetpacklearn.utils.AppPrefsUtils
 import com.luckyboy.jetpacklearn.viewmodel.CustomViewModelProvider
@@ -61,13 +62,12 @@ class LoginFragment : Fragment() {
         binding.activity = activity
 
         binding.btnLogin.setOnClickListener {
-            Toast.makeText(context, "登录还没完成", Toast.LENGTH_SHORT).show();
             loginModel.login()?.observe(this, Observer { user ->
                 user?.let {
                     // let 高阶函数
                     AppPrefsUtils.putLong(BaseConstant.SP_USER_ID, it.id)
                     AppPrefsUtils.putString(BaseConstant.SP_USER_NAME, it.account)
-                    val intent = Intent(context, HomeActivity::class.java)
+                    val intent = Intent(context, HostActivity::class.java)
                     context!!.startActivity(intent)
                     Toast.makeText(context,"登录成功",  Toast.LENGTH_SHORT).show()
                 }
@@ -89,6 +89,7 @@ class LoginFragment : Fragment() {
         }
         binding.btnChangeAvatar.setOnClickListener {
             val intent = Intent(context, UserAvatarActivity::class.java)
+//            val intent = Intent(context, HostActivity::class.java)
             context!!.startActivity(intent)
         }
     }
