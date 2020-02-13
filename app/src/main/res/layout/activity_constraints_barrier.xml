@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Barrier 是一个很实用的辅助类控件 字面的意思就是边界的意思 它的作用就是限制所引用的一组View的边界
+      让这一组View的边界动态的统一起来
+      -->
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="tv1,tv2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+     />
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="西游记"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="作者：吴承恩是个大作家"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv1" />
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或或或哈哈哈哈哈哈哈哈哈哈或
+"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@id/barrier"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

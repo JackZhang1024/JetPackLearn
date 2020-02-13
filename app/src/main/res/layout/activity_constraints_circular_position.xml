@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button1"
+        android:id="@+id/btn1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <!-- layout_constraintCircle="@id/btn1" 以button1 为约束    -->
+    <!-- layout_constraintCircleAngle="120" 圆弧以0时针顺时针旋转120度  -->
+    <!-- layout_constraintCircleRadius="100dp" 圆半径为100dp   -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button2"
+        app:layout_constraintCircle="@id/btn1"
+        app:layout_constraintCircleAngle="140"
+        app:layout_constraintCircleRadius="100dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
