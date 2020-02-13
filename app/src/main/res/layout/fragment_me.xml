@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data></data>
+    <data>
+        <variable
+            name="user"
+            type="com.luckyboy.jetpacklearn.db.data.User"
+            />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -11,7 +16,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@color/colorAccent"
+            android:src="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/guideline2"
             app:layout_constraintVertical_bias="1.0"
@@ -27,13 +32,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0.3"
             android:layout_marginStart="20dp"
+            app:imageTransFromUrl="@{user.headImage}"
             />
 
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名"
+            android:text="@{user.name}"
             app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             android:layout_marginStart="10dp"
@@ -47,7 +53,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/guideline2"
             app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-            android:text="账户信息"
+            android:text="@{user.account}"
             android:padding="10dp"
             android:textColor="#000000"
             android:textSize="16sp"
