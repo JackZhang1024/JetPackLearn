@@ -19,24 +19,22 @@ class ShoeModel constructor(shoeRepository: ShoeRepository) : ViewModel() {
     }
 
     // 鞋子集合的观察类
-    val shoes:LiveData<PagedList<Shoe>> = brand.switchMap {
+    val shoes: LiveData<PagedList<Shoe>> = brand.switchMap {
         // Room数据库查询，只要知道返回的是LiveData<List<Shoe>> 即可
-        if (it == ALL){
-            LivePagedListBuilder<Int, Shoe>(
-                CustomPageDataSourceFactory(shoeRepository),
-                PagedList.Config.Builder()
-                    .setPageSize(10)
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(10)
-                    .build()
-
-            ).build()
-        }else{
-            val array:Array<String> =
-                when (it){
+        if (it == ALL) {
+            val factory = CustomPageDataSourceFactory(shoeRepository)
+            val pageConfig: PagedList.Config = PagedList.Config.Builder()
+                .setPageSize(10)
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .build()
+            LivePagedListBuilder<Int, Shoe>(factory, pageConfig).build()
+        } else {
+            val array: Array<String> =
+                when (it) {
                     NIKE -> arrayOf("Nike", "Air Jordan")
                     ADIDAS -> arrayOf("Adidas")
-                    else-> arrayOf("Converse", "UA", "ANTA")
+                    else -> arrayOf("Converse", "UA", "ANTA")
                 }
             shoeRepository.getShoesByBrand(array)
                 .createPageList(6, 6)

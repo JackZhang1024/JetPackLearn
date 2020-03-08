@@ -20,10 +20,10 @@ import com.luckyboy.jetpacklearn.viewmodel.CustomViewModelProvider
 import com.luckyboy.jetpacklearn.viewmodel.RegisterModel
 import kotlinx.android.synthetic.*
 
-class RegisterFragment:Fragment(){
+class RegisterFragment : Fragment() {
 
-    private var isEnable:Boolean = false
-    private val registerModel:RegisterModel by viewModels {
+    private var isEnable: Boolean = false
+    private val registerModel: RegisterModel by viewModels {
         CustomViewModelProvider.providerRegisterModel(requireContext())
     }
 
@@ -32,14 +32,15 @@ class RegisterFragment:Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       val binding:FragmentRegisterBinding =  DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
-       initData(binding)
+        val binding: FragmentRegisterBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+        initData(binding)
         onSubscribeUi(binding)
         return binding.root
     }
 
-    private fun initData(binding: FragmentRegisterBinding){
-        val safeVarargs:RegisterFragmentArgs by navArgs()
+    private fun initData(binding: FragmentRegisterBinding) {
+        val safeVarargs: RegisterFragmentArgs by navArgs()
         val email = safeVarargs.email
         binding.model?.mail?.value = email
 
@@ -48,7 +49,7 @@ class RegisterFragment:Fragment(){
         binding.activity = activity
     }
 
-    private fun onSubscribeUi(binding: FragmentRegisterBinding){
+    private fun onSubscribeUi(binding: FragmentRegisterBinding) {
         binding.btnRegister.setOnClickListener {
             registerModel.register()
 //            var bundle

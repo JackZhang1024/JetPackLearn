@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.luckyboy.jetpacklearn.common.BaseApplication
+import com.luckyboy.JetPackApplication
 import com.luckyboy.jetpacklearn.db.RepositoryProvider
 import com.luckyboy.jetpacklearn.db.data.Shoe
 import com.luckyboy.jetpacklearn.db.data.User
@@ -48,7 +48,7 @@ class LoginModel constructor(private val repository: UserRepository) : ViewModel
 
     // 第一次启动的是否使用
     fun onFirstLaunch(): String {
-        val context = BaseApplication.context
+        val context = JetPackApplication.context
         context.assets.open("shoes.json").use {
             JsonReader(it.reader()).use {
                 val shoeType = object : TypeToken<List<Shoe>>() {}.type

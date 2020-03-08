@@ -2,12 +2,12 @@ package com.luckyboy.jetpacklearn.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.luckyboy.jetpacklearn.common.BaseApplication
+import com.luckyboy.JetPackApplication
 import com.luckyboy.jetpacklearn.common.BaseConstant
 
 object AppPrefsUtils {
 
-    private var sp: SharedPreferences = BaseApplication.context.getSharedPreferences(
+    private var sp: SharedPreferences = JetPackApplication.context.getSharedPreferences(
         BaseConstant.TABLE_RREFS, Context.MODE_PRIVATE
     )
 

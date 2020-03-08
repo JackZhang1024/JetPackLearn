@@ -7,11 +7,11 @@ buildscript {
     ext.gsonVersion = '2.8.2'
     ext.glideVersion = '4.9.0'
     ext.kotlin_version = '1.3.21'
-    ext.lifecycleVersion = '2.2.0-alpha01'
-    ext.navigationVersion = "2.0.0"
-    ext.roomVersion = '2.1.0-beta01'
+    ext.lifecycleVersion = '2.2.0'
+    ext.navigationVersion = "2.2.1"
+    ext.roomVersion = '2.2.4'
     ext.workVersion = '2.1.0-alpha02'
-    ext.pagingVersion = '2.1.0-alpha01'
+    ext.pagingVersion = '2.1.1'
     ext.workVersion = "2.0.1"
     ext.trasnVersion = "4.0.1"
     ext.sweetVersion = "1.5.1"
@@ -23,7 +23,7 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         // NOTE: Do not place your application dependencies here; they belong
@@ -39,7 +39,9 @@ allprojects {
             url 'http://www.idescout.com/maven/repo/'
             name 'IDEScout, Inc.'
         }
-
+        maven {
+            url "https://jitpack.io"
+        }
     }
 }
 

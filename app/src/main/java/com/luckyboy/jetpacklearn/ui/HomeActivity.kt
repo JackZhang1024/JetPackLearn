@@ -5,10 +5,9 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.luckyboy.jetpacklearn.R
-import com.luckyboy.jetpacklearn.common.BaseApplication.Companion.context
+import com.luckyboy.JetPackApplication.Companion.context
 import com.luckyboy.jetpacklearn.databinding.ActivityHomeBinding
 import com.luckyboy.jetpacklearn.ui.adapter.ShoeAdapter
 import com.luckyboy.jetpacklearn.viewmodel.CustomViewModelProvider
