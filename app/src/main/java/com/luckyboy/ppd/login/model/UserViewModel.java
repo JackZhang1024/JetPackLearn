@@ -10,7 +10,7 @@ import com.luckyboy.libnetwork.ApiResponse;
 import com.luckyboy.libnetwork.ApiService;
 import com.luckyboy.libnetwork.JsonCallback;
 import com.luckyboy.libnetwork.Request;
-import com.luckyboy.libnetwork.cache.CacheManager;
+import com.luckyboy.ppd.core.model.User;
 import com.luckyboy.ppd.login.UserManager;
 
 

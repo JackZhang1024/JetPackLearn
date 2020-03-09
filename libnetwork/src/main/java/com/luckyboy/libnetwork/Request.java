@@ -162,7 +162,7 @@ public abstract class Request<T, R extends Request> implements Cloneable {
         if (mCacheStrategy != NET_ONLY) {
             ArchTaskExecutor.getIOThreadExecutor().execute(() -> {
                 ApiResponse<T> response = readCache();
-                if (callback != null) {
+                if (callback != null && response.body != null) {
                     Log.e(TAG, "execute: 缓存数据...");
                     callback.onCacheSuccess(response);
                 }
@@ -237,7 +237,7 @@ public abstract class Request<T, R extends Request> implements Cloneable {
 
     @NonNull
     @Override
-    protected Request clone() throws CloneNotSupportedException {
+    public Request clone() throws CloneNotSupportedException {
         return (Request<T, R>) super.clone();
     }
 

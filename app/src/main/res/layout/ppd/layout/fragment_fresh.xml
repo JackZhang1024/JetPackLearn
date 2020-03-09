@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         >
 
-        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        <com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout
             android:id="@+id/twk_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +24,7 @@
                 android:background="#ffffff"
                 android:overScrollMode="never" />
 
-        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+        </com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout>
 
         <com.luckyboy.libcommon.view.EmptyView
             android:id="@+id/empty_view"

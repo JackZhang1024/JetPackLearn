@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="comment"
+            type="com.luckyboy.ppd.core.model.Comment" />
+
+        <variable
+            name="lifeCycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="com.luckyboy.libcommon.utils.StringConvert" />
+
+    </data>
+
+    <com.luckyboy.libcommon.view.CornerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/color_gray"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="@{comment==null?View.GONE: View.VISIBLE}"
+        app:clip_radius="6dp"
+        app:clip_side="all">
+
+        <!--  神评论      -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_god_comment2"></ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+
+                <com.luckyboy.libcommon.view.PPImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:image_url="@{comment.author.avatar}"
+                    app:isCircle="@{true}"
+                    tools:src="@mipmap/ic_launcher_round">
+
+                </com.luckyboy.libcommon.view.PPImageView>
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@{comment.author.name}"
+                    android:textColor="@color/color_3d3"
+                    android:textSize="12sp"
+                    tools:text="神秘的jetpack"></TextView>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1"></Space>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@{comment.ugc.likeCount>0?StringConvert.convertFeedUgc(comment.ugc.likeCount):null}"
+                    android:textColor="@{comment.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
+                    android:textSize="12sp"
+                    tools:text="1000"></TextView>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:src="@{comment.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
+                    tools:src="@drawable/icon_cell_liked">
+
+                </ImageView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="36dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{comment.commentText}"
+                android:textColor="@color/color_3d3"
+                android:textSize="14sp"
+                android:visibility="@{TextUtils.isEmpty(comment.commentText)?View.GONE:View.VISIBLE}"
+                tools:text="神秘的JetPack神秘的JetPack神秘的JetPack"></TextView>
+
+            <FrameLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:visibility="@{TextUtils.isEmpty(comment.imageUrl)?View.GONE:View.VISIBLE}">
+
+                <com.luckyboy.libcommon.view.PPImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/color_theme_10"
+                    android:visibility="@{TextUtils.isEmpty(comment.imageUrl)?View.GONE:View.VISIBLE}"
+                    app:image_url="@{comment.imageUrl}"
+                    app:isCircle="@{false}"
+                    tools:src="@mipmap/ic_launcher"></com.luckyboy.libcommon.view.PPImageView>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_video_play"
+                    android:visibility="@{TextUtils.isEmpty(comment.videoUrl)?View.GONE:View.VISIBLE}"></ImageView>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </com.luckyboy.libcommon.view.CornerFrameLayout>
+</layout>

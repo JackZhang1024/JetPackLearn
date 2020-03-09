@@ -1,12 +1,10 @@
-package com.luckyboy.ppd.login.model;
+package com.luckyboy.ppd.core.model;
 
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-
-import com.luckyboy.libcommon.BR;
 
 import java.io.Serializable;
 

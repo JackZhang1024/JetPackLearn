@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 注意 这块有个id 不能丢了 否则视频播放不了  android:id="@id/exo_content_frame"   -->
+    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+        android:id="@id/exo_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+        <!-- Video Capture  will be inserted as the first child of the content view       -->
+    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
+
+</merge>

@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.luckyboy.libnetwork.cache.CacheManager;
-import com.luckyboy.ppd.login.model.User;
+import com.luckyboy.ppd.core.model.User;
 
 // 用户管理
 public class UserManager {

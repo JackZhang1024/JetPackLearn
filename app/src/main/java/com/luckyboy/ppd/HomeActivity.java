@@ -14,11 +14,12 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.luckyboy.jetpacklearn.R;
+import com.luckyboy.libcommon.utils.StatusBar;
 import com.luckyboy.ppd.core.model.Destination;
 import com.luckyboy.ppd.core.util.AppConfig;
 import com.luckyboy.ppd.core.util.NavGraphBuilder;
 import com.luckyboy.ppd.login.UserManager;
-import com.luckyboy.ppd.login.model.User;
+import com.luckyboy.ppd.core.model.User;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,6 +33,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 启用沉浸式布局 白底黑字
+        StatusBar.fitSystemBar(this);
         setContentView(R.layout.activity_ppd_home);
         nav = findViewById(R.id.nav_view);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
