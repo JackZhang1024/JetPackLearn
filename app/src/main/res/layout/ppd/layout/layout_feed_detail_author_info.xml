@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.luckyboy.ppd.core.model.Feed" />
+
+        <variable
+            name="leftMargin"
+            type="java.lang.Integer" />
+
+        <variable
+            name="fullScreen"
+            type="java.lang.Boolean" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="com.luckyboy.ppd.core.util.TimeUtils"/>
+
+        <import type="com.luckyboy.ppd.core.ui.InteractionPresenter" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/author_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingLeft="@{leftMargin}"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:orientation="vertical">
+
+        <com.luckyboy.libcommon.view.PPImageView
+            android:id="@+id/author_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="1dp"
+            app:image_url="@{feed.author.avatar}"
+            app:isCircle="@{true}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:src="@drawable/ic_launcher"
+            />
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:text="@{feed.author.name}"
+            android:textColor="@{fullScreen? @color/color_white:@color/color_000}"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="神秘的JetPack"
+            />
+
+        <TextView
+            android:id="@+id/create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@{fullScreen?@color/color_white:@color/color_000}"
+            android:textStyle="normal"
+            android:textSize="12sp"
+            android:text="@{TimeUtils.calculate(feed.createTime)}"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/author_name"
+            tools:text="3天前"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="@{fullScreen?@color/transparent:@color/color_theme}"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{feed.author.hasFollow?@string/has_follow:@string/unfollow}"
+            android:textColor="@color/color_white"
+            android:textSize="14sp"
+            app:backgroundTint="@color/color_theme"
+            app:cornerRadius="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@{fullScreen?@color/color_white:@color/transparent}"
+            app:strokeWidth="1dp"
+            tools:text="已关注"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

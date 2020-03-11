@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.luckyboy.ppd.core.model.Feed" />
+
+        <variable
+            name="fullScreen"
+            type="java.lang.Boolean" />
+
+        <import type="com.luckyboy.ppd.core.ui.InteractionPresenter" />
+
+        <import type="com.luckyboy.libcommon.utils.PixUtils" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.luckyboy.ppd.core.view.FullScreenPlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp"
+            app:layout_behavior="com.luckyboy.ppd.detail.ViewZoomBehavior"
+            app:scrolling_id="@+id/recycler_view" />
+
+        <include
+            android:id="@+id/author_info"
+            layout="@layout/layout_feed_detail_author_info"
+            app:anchorId="@+id/player_view"
+            app:feed="@{feed}"
+            app:fullScreen="@{false}"
+            app:layout_behavior="com.luckyboy.ppd.detail.ViewAnchorBehavior"
+            app:leftMargin="@{PixUtils.dp2px(16)}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never"
+            app:anchorId="@+id/author_info"
+            app:layout_behavior="com.luckyboy.ppd.detail.ViewAnchorBehavior" />
+
+        <include
+            android:id="@+id/bottom_interaction"
+            layout="@layout/layout_feed_detail_bottom_interaction"
+            app:feed="@{feed}"
+            app:fullScreen="@{fullScreen}" />
+
+        <include
+            android:id="@+id/fullscreen_author_info"
+            layout="@layout/layout_feed_detail_author_info"
+            app:feed="@{feed}"
+            app:fullScreen="@{fullScreen}"
+            app:leftMargin="@{PixUtils.dp2px(60)}" />
+
+
+        <ImageView
+            android:id="@+id/action_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/icon_back_white" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

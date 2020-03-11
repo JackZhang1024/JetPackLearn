@@ -95,5 +95,22 @@ dependencies {
     api 'com.google.android.exoplayer:exoplayer-dash:2.10.4'
     api 'com.google.android.exoplayer:exoplayer-ui:2.10.4'
 
+    //gesture imageview
+    api 'com.github.chrisbanes:PhotoView:2.3.0@aar'
+
+    //viewpager2 可以禁止预加载
+    api "androidx.viewpager2:viewpager2:1.0.0"
+
+    //material组件
+    api 'com.google.android.material:material:1.1.0-alpha10'
+
+    //camera
+    api 'androidx.camera:camera-core:1.0.0-alpha04'
+    api 'androidx.camera:camera-camera2:1.0.0-alpha04'
+    api 'androidx.camera:camera-view:1.0.0-alpha01'
+    api 'androidx.camera:camera-extensions:1.0.0-alpha01'
+
+    //workmanager
+    api 'androidx.work:work-runtime:2.2.0'
 
 }

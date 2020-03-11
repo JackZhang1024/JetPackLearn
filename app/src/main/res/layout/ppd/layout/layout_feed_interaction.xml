@@ -19,6 +19,8 @@
 
         <import type="android.content.Context" />
 
+        <import type="com.luckyboy.ppd.core.ui.InteractionPresenter" />
+
     </data>
 
     <LinearLayout
@@ -30,10 +32,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
+            android:fadingEdgeLength="0dp"
+            android:onClick="@{()->InteractionPresenter.toggleFeedLike(lifeCycleOwner,feed)}"
             android:text="@{feed.ugc.likeCount>0? StringConvert.convertFeedUgc(feed.ugc.likeCount):@string/like}"
             android:textColor="@{feed.ugc.hasLiked? @color/color_theme:@color/color_3d3}"
             android:textSize="14sp"
@@ -49,10 +54,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/diss"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
+            android:onClick="@{()->InteractionPresenter.toggleFeedDiss(lifeCycleOwner, feed)}"
             android:text="@string/diss"
             android:textColor="@{feed.ugc.hasdiss? @color/color_theme:@color/color_3d3}"
             android:textSize="14sp"
@@ -69,15 +76,17 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/comment"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
+            android:onClick="@{()->InteractionPresenter.toggleCommentLike(lifeCycleOwner, feed.topComment)}"
             android:text="@{feed.ugc.commentCount>0? StringConvert.convertFeedUgc(feed.ugc.commentCount):@string/feed_comment}"
             android:textColor="@color/color_3d3"
             android:textSize="14sp"
             app:cornerRadius="0dp"
-            app:icon="@{feed.ugc.hasLiked? @drawable/icon_cell_liked:@drawable/icon_cell_like}"
+            app:icon="@drawable/icon_cell_comment"
             app:iconGravity="textStart"
             app:iconPadding="4dp"
             app:iconTint="@color/color_3d3"
@@ -88,10 +97,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/share"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
+            android:onClick="@{()->InteractionPresenter.openShare(((Context)lifeCycleOwner), feed)}"
             android:text="@{feed.ugc.shareCount>0? StringConvert.convertFeedUgc(feed.ugc.shareCount):@string/share}"
             android:textColor="@color/color_3d3"
             android:textSize="14sp"

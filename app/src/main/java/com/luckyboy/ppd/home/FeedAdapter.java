@@ -12,13 +12,13 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.luckyboy.jetpacklearn.BR;
 import com.luckyboy.jetpacklearn.R;
 import com.luckyboy.jetpacklearn.databinding.LayoutFeedTypeImageBinding;
 import com.luckyboy.jetpacklearn.databinding.LayoutFeedTypeVideoBinding;
 import com.luckyboy.libcommon.extension.AbsPagedListAdapter;
 import com.luckyboy.ppd.core.model.Feed;
 import com.luckyboy.ppd.core.view.ListPlayerView;
+import com.luckyboy.ppd.detail.FeedDetailActivity;
 
 public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolder> {
 
@@ -66,11 +66,12 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolde
         holder.bindData(feed);
         holder.itemView.setOnClickListener((view) -> {
             // 跳转到详情页面
+            FeedDetailActivity.startFeedDetailActivity(mContext, feed, mCategory);
             onStartFeedDetailActivity(feed);
         });
     }
 
-    public void onStartFeedDetailActivity(Feed feed){
+    public void onStartFeedDetailActivity(Feed feed) {
 
     }
 
@@ -96,7 +97,6 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolde
                 LayoutFeedTypeImageBinding imageBinding = (LayoutFeedTypeImageBinding) mBinding;
                 feedImage = imageBinding.feedImage;
                 imageBinding.feedImage.bindData(item.width, item.height, 16, item.cover);
-
             } else if (mBinding instanceof LayoutFeedTypeVideoBinding) {
                 LayoutFeedTypeVideoBinding videoBinding = (LayoutFeedTypeVideoBinding) mBinding;
                 videoBinding.listPlayerView.bindData(mCategory, item.width, item.height, item.cover, item.url);

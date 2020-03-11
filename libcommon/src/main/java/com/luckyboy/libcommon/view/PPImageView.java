@@ -65,7 +65,7 @@ public class PPImageView extends AppCompatImageView {
     }
 
     public void bindData(int widthPx, int heightPx, int marginLeft, String imageUrl) {
-
+        bindData(widthPx, heightPx, marginLeft, PixUtils.getScreenWidth(), PixUtils.getScreenWidth(), imageUrl);
     }
 
     public void bindData(int widthPx, int heightPx, final int marginLeft, final int maxWidth, final int maxHeight, String imageUrl) {
@@ -113,14 +113,14 @@ public class PPImageView extends AppCompatImageView {
     }
 
     @BindingAdapter(value = {"blur_url", "radius"})
-    public static void setBlurImageUrl(ImageView imageView, String blurUrl, int radius){
+    public static void setBlurImageUrl(ImageView imageView, String blurUrl, int radius) {
         Glide.with(imageView).load(blurUrl).override(radius)
                 .transform(new BlurTransformation())
                 .dontAnimate()
                 .into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                         imageView.setBackground(resource);
+                        imageView.setBackground(resource);
                     }
                 });
     }

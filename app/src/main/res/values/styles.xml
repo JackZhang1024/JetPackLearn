@@ -33,7 +33,6 @@
     </style>
 
     <style name="HostTheme" parent="AppTheme">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -44,6 +43,46 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+
+    <style name="feedDetail" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="preview" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <declare-styleable name="view_offset_behavior">
+        <attr name="anchor_gravity" format="enum">
+            <enum name="left" value="0"></enum>
+            <enum name="top" value="1"></enum>
+            <enum name="right" value="2"></enum>
+            <enum name="bottom" value="3"></enum>
+        </attr>
+        <attr name="scroll_follow" format="boolean" />
+        <attr name="anchor_id" format="integer" />
+
+    </declare-styleable>
+
+    <declare-styleable name="view_anchor_behavior">
+        <attr name="anchorId" format="integer"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="view_zoom_behavior">
+        <attr name="mini_height" format="dimension" />
+        <attr name="scrolling_id" format="integer" />
+    </declare-styleable>
+
+    <style name="active" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_000</item>
+    </style>
+
+    <style name="inActive" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_000</item>
     </style>
 
 </resources>
