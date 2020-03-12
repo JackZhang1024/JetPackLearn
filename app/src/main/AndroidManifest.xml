@@ -40,6 +40,7 @@
         <activity
             android:name=".ui.HomeActivity"
             android:theme="@style/HomeTheme" />
+        <activity android:name="com.luckyboy.ppd.find.TagFeedListActivity"/>
         <activity
             android:name="com.luckyboy.ppd.detail.FeedDetailActivity"
             android:screenOrientation="portrait"

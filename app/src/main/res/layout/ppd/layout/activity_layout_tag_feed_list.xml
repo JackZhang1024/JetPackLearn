@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagList"
+            type="com.luckyboy.ppd.core.model.TagList" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="com.luckyboy.ppd.core.ui.InteractionPresenter" />
+
+    </data>
+
+    <com.luckyboy.libcommon.view.WindowInsetsFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/refresh_layout"
+            layout="@layout/layout_refresh_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:fitsSystemWindows="true">
+
+            <ImageView
+                android:id="@+id/action_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/icon_back_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.luckyboy.libcommon.view.PPImageView
+                android:id="@+id/tag_logo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                app:image_url="@{tagList.icon}"
+                app:isCircle="@{false}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/action_back"
+                app:layout_constraintTop_toTopOf="parent"
+                app:radius="@{8}"
+                tools:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tag_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{tagList.title}"
+                android:textColor="@color/color_000"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tag_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="标题" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/top_bar_follow"
+                android:layout_width="60dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="0dp"
+                android:paddingTop="0dp"
+                android:paddingRight="0dp"
+                android:paddingBottom="0dp"
+                android:text="@{tagList.hasFollow? @string/tag_follow:@string/tag_unfollow}"
+                android:textColor="@color/color_white"
+                android:textSize="14sp"
+                app:backgroundTint="@color/color_theme"
+                app:cornerRadius="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tag_title"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="关注" />
+
+            <View
+                android:id="@+id/top_line"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/color_gray2"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.luckyboy.libcommon.view.WindowInsetsFrameLayout>
+</layout>

@@ -163,9 +163,11 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
 
     }
 
+    // TODO: 2020-03-12 注意 这块一定要清楚的知道是要干什么的
     @Override
     public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
-        super.registerAdapterDataObserver(observer);
+        // 有个坑 如果 没有用 AdapterDataObserverProxy 则用户帖子的详情页面就会出现 进入后不能定位到列表顶部的问题
+        super.registerAdapterDataObserver(new AdapterDataObserverProxy(observer));
     }
 
 

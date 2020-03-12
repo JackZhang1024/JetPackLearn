@@ -80,4 +80,8 @@ dependencies {
 
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
 
+    //页面刷新组件
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
+
 }

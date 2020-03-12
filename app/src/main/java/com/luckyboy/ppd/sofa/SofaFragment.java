@@ -134,11 +134,11 @@ public class SofaFragment extends Fragment {
     }
 
 
-    private Fragment getTabFragment(int position) {
+    protected Fragment getTabFragment(int position) {
         return HomeFragment.newInstance(tabs.get(position).tag);
     }
 
-    private SofaTab getTabConfig() {
+    protected SofaTab getTabConfig() {
         return AppConfig.getSofaTabConfig();
     }
 
