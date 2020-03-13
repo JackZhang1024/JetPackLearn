@@ -53,6 +53,8 @@
         <activity
             android:name="com.luckyboy.ppd.publish.CaptureActivity"
             android:theme="@style/capture" />
+        <activity android:name="com.luckyboy.ppd.mine.ProfileActivity" />
+        <activity android:name="com.luckyboy.ppd.mine.UserBehaviorListActivity" />
 
         <activity android:name=".ui.UserAvatarActivity" />
         <activity
@@ -60,7 +62,8 @@
             android:theme="@style/HostTheme" />
 
         <activity android:name="com.luckyboy.ppd.HomeActivity" />
-        <activity android:name="com.luckyboy.ppd.publish.PublishActivity"
+        <activity
+            android:name="com.luckyboy.ppd.publish.PublishActivity"
             android:screenOrientation="portrait" />
         <activity android:name="com.luckyboy.ppd.login.LoginActivity" />
         <activity android:name="com.luckyboy.ppd.login.RegisterActivity" />

@@ -72,7 +72,7 @@ public class UserViewModel extends ViewModel {
                     public void onSuccess(ApiResponse<User> response) {
                         super.onSuccess(response);
                         User user = response.body;
-                        UserManager.get().Save(user);
+                        UserManager.get().save(user);
                         status.postValue("success");
                     }
 
