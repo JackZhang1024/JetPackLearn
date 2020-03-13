@@ -40,7 +40,7 @@
         <activity
             android:name=".ui.HomeActivity"
             android:theme="@style/HomeTheme" />
-        <activity android:name="com.luckyboy.ppd.find.TagFeedListActivity"/>
+        <activity android:name="com.luckyboy.ppd.find.TagFeedListActivity" />
         <activity
             android:name="com.luckyboy.ppd.detail.FeedDetailActivity"
             android:screenOrientation="portrait"
@@ -50,13 +50,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/preview" />
 
+        <activity
+            android:name="com.luckyboy.ppd.publish.CaptureActivity"
+            android:theme="@style/capture" />
+
         <activity android:name=".ui.UserAvatarActivity" />
         <activity
             android:name=".ui.HostActivity"
             android:theme="@style/HostTheme" />
 
         <activity android:name="com.luckyboy.ppd.HomeActivity" />
-        <activity android:name="com.luckyboy.ppd.publish.publishActivity" />
+        <activity android:name="com.luckyboy.ppd.publish.PublishActivity"
+            android:screenOrientation="portrait" />
         <activity android:name="com.luckyboy.ppd.login.LoginActivity" />
         <activity android:name="com.luckyboy.ppd.login.RegisterActivity" />
 

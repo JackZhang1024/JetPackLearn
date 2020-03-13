@@ -52,6 +52,7 @@ public class NavProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        messager.printMessage(Diagnostic.Kind.WARNING, "准备生成文件");
         // 收集被注解标记的类
         Set<? extends Element> activityElements = roundEnvironment.getElementsAnnotatedWith(ActivityDestination.class);
         Set<? extends Element> fragmentElements = roundEnvironment.getElementsAnnotatedWith(FragmentDestination.class);
@@ -106,6 +107,7 @@ public class NavProcessor extends AbstractProcessor {
                 }
             }
         }
+        messager.printMessage(Diagnostic.Kind.WARNING, "文件已经生成");
         return true;
     }
 

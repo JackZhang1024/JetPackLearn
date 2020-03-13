@@ -113,4 +113,6 @@ dependencies {
     //workmanager
     api 'androidx.work:work-runtime:2.2.0'
 
+    //aliyun oss 阿里云文件上传
+    api 'com.aliyun.dpa:oss-android-sdk:+'
 }
