@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">JetPackLearn</string>
+    <string name="app_name" translatable="false">皮皮逗</string>
     <string name="input_user_email">用户邮箱</string>
     <string name="input_user_name">用户名</string>
     <string name="input_user_password">密码</string>
@@ -7,6 +7,7 @@
         Go to Settings ->Apps and Notifications->WorkManager Demo ->
         App Permissions and grant access to Storage
     </string>
-
-
+    <string name="select_gallery" translatable="false">从手机相册选择</string>
+    <string name="take_photo" translatable="false">拍摄照片</string>
+    <string name="cancel" translatable="false">取消</string>
 </resources>

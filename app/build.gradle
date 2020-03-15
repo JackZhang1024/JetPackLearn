@@ -26,13 +26,28 @@ android {
     dataBinding {
         enabled true
     }
+    signingConfigs {
+        release {
+            storeFile file("keystore/release.keystore")
+            storePassword "123456"
+            keyAlias "ppd"
+            keyPassword "123456"
+        }
+        debug {
+            storeFile file("keystore/release.keystore")
+            storePassword "123456"
+            keyAlias "ppd"
+            keyPassword "123456"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
-           // resValue("string", "PORT_NUMBER", "8081")
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -84,4 +99,13 @@ dependencies {
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
 
+    // QQ 登录
+    implementation files('libs/open_sdk_r6140_lite.jar')
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    // 裁剪图片
+    implementation 'com.github.yalantis:ucrop:2.2.4'
 }

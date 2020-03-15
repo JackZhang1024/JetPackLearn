@@ -21,6 +21,4 @@ public class PostRequest<T> extends Request<T, PostRequest> {
         return request;
     }
 
-
-
 }

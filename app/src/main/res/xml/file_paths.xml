@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="external_storage_root"
+        path="ppdImages" />
+    <!-- 访问外部存储根目录下的所有文件   -->
+    <external-path
+        name="external_storage_root"
+        path="." />
+</paths>

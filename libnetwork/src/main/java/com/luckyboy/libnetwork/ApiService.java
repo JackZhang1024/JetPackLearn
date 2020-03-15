@@ -13,6 +13,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -84,5 +85,8 @@ public class ApiService {
         return new PostRequest<>(sBaseUrl + url);
     }
 
+    public static <T> FileUploadRequest<T> upload(String url, String filePath, String fileName) {
+        return new FileUploadRequest<>(sBaseUrl + url, filePath, fileName);
+    }
 
 }

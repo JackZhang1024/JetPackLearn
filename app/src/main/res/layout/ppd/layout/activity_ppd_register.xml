@@ -8,7 +8,9 @@
             type="com.luckyboy.ppd.login.model.UserViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -31,7 +33,8 @@
             android:textSize="33sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            />
 
         <EditText
             android:id="@+id/et_phone"
@@ -41,9 +44,11 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:hint="@string/et_phone"
+            android:maxLength="11"
+            android:inputType="number"
             android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_register_hint" />
+            app:layout_constraintTop_toBottomOf="@id/tv_register_hint"/>
 
         <EditText
             android:id="@+id/et_pwd"
@@ -53,6 +58,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:hint="@string/et_pwd"
+            android:maxLength="6"
             android:onTextChanged="@{(text, start, before, count)->model.onPasswordChanged(text)}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_phone" />
@@ -87,14 +93,14 @@
             android:layout_height="60dp"
             android:background="#33999999"
             android:gravity="center"
-            android:onClick="doRegister"
+            android:onClick="doRegisterNext"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/register"
+                android:text="@string/register_next"
                 android:textSize="20sp" />
 
         </LinearLayout>

@@ -29,7 +29,6 @@ public class FileUploadManager {
     private static final String AUTH_SERVER_URL = "http://123.56.232.18:7080/";
 
     static {
-
         OSSCredentialProvider credentialProvider = new OSSAuthCredentialsProvider(AUTH_SERVER_URL);
         //该配置类如果不设置，会有默认配置，具体可看该类
         ClientConfiguration conf = new ClientConfiguration();
@@ -41,6 +40,7 @@ public class FileUploadManager {
 
         oss = new OSSClient(AppGlobals.getInstance(), END_POINT, credentialProvider, conf);
     }
+
 
     //同步
     public static String upload(byte[] bytes) throws ClientException, ServiceException {
