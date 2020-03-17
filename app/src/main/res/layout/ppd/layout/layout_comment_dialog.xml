@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/comment_ext_layout"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
@@ -28,6 +29,7 @@
                 android:scaleType="centerCrop"
                 />
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/comment_icon_video"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"

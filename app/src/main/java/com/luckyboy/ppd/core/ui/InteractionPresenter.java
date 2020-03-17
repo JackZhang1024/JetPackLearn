@@ -1,12 +1,16 @@
 package com.luckyboy.ppd.core.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.alibaba.fastjson.JSONObject;
 import com.luckyboy.libcommon.global.AppGlobals;
 import com.luckyboy.libcommon.utils.ToastManager;
 import com.luckyboy.libnetwork.ApiResponse;
@@ -17,7 +21,6 @@ import com.luckyboy.ppd.core.model.Feed;
 import com.luckyboy.ppd.core.model.User;
 import com.luckyboy.ppd.login.UserManager;
 
-import org.json.JSONObject;
 
 public class InteractionPresenter {
 
@@ -87,51 +90,50 @@ public class InteractionPresenter {
         if (!isLogin(owner, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-              toggleFeedLikeInternal(feed);
+                toggleFeedLikeInternal(feed);
             }
-        })){
+        })) {
 
-        }else{
+        } else {
             toggleFeedDissInternal(feed);
         }
-
     }
 
     private static void toggleFeedDissInternal(Feed feed) {
-         ApiService.get(URL_TOGGLE_FEED_DISS)
-                 .addParam("userId", UserManager.get().getUserId())
-                 .addParam("itemId", feed.itemId)
-                 .execute(new JsonCallback<JSONObject>() {
-                     @Override
-                     public void onSuccess(ApiResponse<JSONObject> response) {
-                         if (response.body!=null){
+        ApiService.get(URL_TOGGLE_FEED_DISS)
+                .addParam("userId", UserManager.get().getUserId())
+                .addParam("itemId", feed.itemId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if (response.body != null) {
 
-                         }
-                         Log.e(TAG, "onSuccess: ");
-                     }
+                        }
+                        Log.e(TAG, "onSuccess: ");
+                    }
 
-                     @Override
-                     public void onError(ApiResponse<JSONObject> response) {
-                         ToastManager.showToast(response.message);
-                     }
-                 });
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        ToastManager.showToast(response.message);
+                    }
+                });
     }
 
     // 打开分享面板
-    public static void openShare(Context context, Feed feed){
+    public static void openShare(Context context, Feed feed) {
         ToastManager.showToast("打开分享面板");
     }
 
     // 给一个帖子的评论点赞/取消点赞
-    public static void toggleCommentLike(LifecycleOwner owner, Comment comment){
+    public static void toggleCommentLike(LifecycleOwner owner, Comment comment) {
         if (!isLogin(owner, new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 toggleCommentLikeInternal(comment);
             }
-        })){
+        })) {
 
-        }else{
+        } else {
             toggleCommentLikeInternal(comment);
         }
     }
@@ -154,7 +156,6 @@ public class InteractionPresenter {
     }
 
 
-
     // 第一参数 observer 是观察是否用户登录的状态的
     private static Observer<User> loginObserver(Observer<User> observer, LiveData<User> liveData) {
         return new Observer<User>() {
@@ -167,6 +168,58 @@ public class InteractionPresenter {
             }
         };
     }
+
+
+    // 删除某个帖子的一个评论
+    public static LiveData<Boolean> deleteFeedComment(Context context, long itemId, long commentId) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        // 进行删除评论操作
+                        deleteFeedCommentInternal(liveData, itemId, commentId);
+                    }
+                })
+                .setMessage("您确定要删除这条评论吗？")
+                .create()
+                .show();
+        return liveData;
+    }
+
+
+    private static void deleteFeedCommentInternal(
+            LiveData liveData, long itemId, long commentId) {
+        ApiService.get("/comment/deleteComment")
+                .addParam("userId", UserManager.get().getUserId())
+                .addParam("commentId", commentId)
+                .addParam("itemId", itemId)
+                .execute(new JsonCallback<com.alibaba.fastjson.JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if (response.body != null) {
+                            boolean result = response.body.getBooleanValue("result");
+                            MutableLiveData data = (MutableLiveData) liveData;
+                            data.postValue(result);
+                            ToastManager.showToast("评论删除成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        super.onError(response);
+                        ToastManager.showToast(response.message);
+                    }
+                });
+    }
+
 
 
 }

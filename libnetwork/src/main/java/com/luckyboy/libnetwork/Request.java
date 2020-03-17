@@ -7,9 +7,11 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 
+import com.alibaba.fastjson.JSON;
 import com.luckyboy.libnetwork.cache.CacheManager;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -184,6 +186,10 @@ public abstract class Request<T, R extends Request> implements Cloneable {
                     if (!result.success) {
                         callback.onError(result);
                     } else {
+                        if (result.status != 200) {
+                            callback.onError(result);
+                            return;
+                        }
                         callback.onSuccess(result);
                     }
                 }
@@ -201,6 +207,16 @@ public abstract class Request<T, R extends Request> implements Cloneable {
         try {
             String content = response.body().string();
             if (success) {
+                //  {"status":200,"message":"成功","data":{"data":[]}}
+                Log.e(TAG, "parseResponse: " + content);
+                JSONObject jsonObject = new JSONObject(content);
+                int statusCode = jsonObject.getInt("status");
+                String messageCode = jsonObject.getString("message");
+                if (statusCode != 200) {
+                    success = false;
+                    status = statusCode;
+                    message = messageCode;
+                }
                 if (callback != null) {
                     // 参数化类型
                     ParameterizedType type = (ParameterizedType) callback.getClass().getGenericSuperclass();
@@ -214,7 +230,7 @@ public abstract class Request<T, R extends Request> implements Cloneable {
             } else {
                 message = content;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             message = e.getMessage();
             success = false;
@@ -223,7 +239,6 @@ public abstract class Request<T, R extends Request> implements Cloneable {
         result.success = success;
         result.status = status;
         result.message = message;
-
         if (mCacheStrategy != NET_ONLY && result.success && result.body != null && result.body instanceof Serializable) {
             saveCache(result.body);
         }

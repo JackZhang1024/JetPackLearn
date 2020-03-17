@@ -63,7 +63,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:hint="@string/et_phone"
-            android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
+            android:onTextChanged="@{(text, start, before, count)->model.onPhoneChanged(text)}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_login_hint" />
 

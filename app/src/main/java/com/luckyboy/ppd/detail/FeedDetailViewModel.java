@@ -1,5 +1,7 @@
 package com.luckyboy.ppd.detail;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
@@ -18,6 +20,8 @@ import java.util.List;
 // 这里处理一些帖子详情页面的数据
 public class FeedDetailViewModel extends AbsViewModel<Comment> {
 
+    private static final String TAG = "FeedDetailViewModel";
+
     private long itemId;
 
     @Override
@@ -34,17 +38,18 @@ public class FeedDetailViewModel extends AbsViewModel<Comment> {
 
         @Override
         public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Comment> callback) {
+            Log.e(TAG, "loadInitial: ");
             loadData(params.requestedInitialKey, params.requestedLoadSize, callback);
         }
 
 
         @Override
         public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Comment> callback) {
+            Log.e(TAG, "loadAfter: " + params.key);
             if (params.key > 0) {
                 loadData(params.key, params.requestedLoadSize, callback);
             }
         }
-
 
         @Override
         public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Comment> callback) {
@@ -59,6 +64,7 @@ public class FeedDetailViewModel extends AbsViewModel<Comment> {
 
 
         private void loadData(Integer key, int requestedLoadSize, LoadCallback<Comment> callback) {
+            Log.e(TAG, "loadData: key " + key + " requestSize  " + requestedLoadSize);
             // 利用同步方法获取评论信息
             ApiResponse<List<Comment>> response = ApiService.get("/comment/queryFeedComments")
                     .addParam("id", key)

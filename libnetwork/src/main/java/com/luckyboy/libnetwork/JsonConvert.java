@@ -13,9 +13,12 @@ public class JsonConvert implements Convert {
         JSONObject data = jsonObject.getJSONObject("data");
         if (data != null) {
             Object dataInner = data.get("data");
-            return JSONObject.parseObject(dataInner.toString(), type);
+            if (dataInner != null) {
+                return JSONObject.parseObject(dataInner.toString(), type);
+            }
         }
         return null;
     }
+
 
 }

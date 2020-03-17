@@ -38,10 +38,10 @@ public class RegisterActivity extends AppCompatActivity {
             finish();
         });
         registerModel = new ViewModelProvider(this).get(UserViewModel.class);
-        registerModel.name.observe(this, new Observer<String>() {
+        registerModel.phone.observe(this, new Observer<String>() {
             @Override
             public void onChanged(String name) {
-                //Log.e(TAG, "onChanged: name " + name);
+                //Log.e(TAG, "onChanged: phone " + phone);
             }
         });
         registerModel.password.observe(this, new Observer<String>() {
@@ -67,13 +67,13 @@ public class RegisterActivity extends AppCompatActivity {
         // 跳转到下一页 然后选择拍摄或者选择照片
         //registerModel.register();
         // 判断用户名和密码是否为空
-        String userPhone = registerModel.name.getValue();
+        String userPhone = registerModel.phone.getValue();
         String userPwd = registerModel.password.getValue();
         if (TextUtils.isEmpty(userPhone) || TextUtils.isEmpty(userPwd)) {
             ToastManager.showToast("用户手机号或者密码不能为空");
             return;
         }
-        ChooseAvatarActivity.startChooseAvatarActivityForResult(this, registerModel.name.getValue(), registerModel.password.getValue());
+        ChooseAvatarActivity.startChooseAvatarActivityForResult(this, registerModel.phone.getValue(), registerModel.password.getValue());
     }
 
     @Override

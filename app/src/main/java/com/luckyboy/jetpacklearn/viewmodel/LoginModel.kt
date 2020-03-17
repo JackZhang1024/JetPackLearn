@@ -15,7 +15,7 @@ import com.luckyboy.jetpacklearn.db.repository.UserRepository
 
 // LoginModel主要负责登录逻辑处理和 登录 密码 两个输入框内容改变的时候 数据更新的处理
 
-//class LoginModel constructor(name: String, pwd: String, context: Context) {
+//class LoginModel constructor(phone: String, pwd: String, context: Context) {
 class LoginModel constructor(private val repository: UserRepository) : ViewModel() {
 
     private val TAG: String by lazy {

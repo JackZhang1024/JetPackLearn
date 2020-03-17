@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.paging.ItemKeyedDataSource;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +20,9 @@ import com.luckyboy.jetpacklearn.databinding.LayoutFeedCommentListItemBinding;
 import com.luckyboy.libcommon.extension.AbsPagedListAdapter;
 import com.luckyboy.libcommon.utils.PixUtils;
 import com.luckyboy.libcommon.utils.ToastManager;
+import com.luckyboy.ppd.core.MutableItemKeyDataSource;
 import com.luckyboy.ppd.core.model.Comment;
+import com.luckyboy.ppd.core.ui.InteractionPresenter;
 import com.luckyboy.ppd.login.UserManager;
 import com.luckyboy.ppd.publish.PreviewActivity;
 
@@ -52,7 +58,16 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
         Comment item = getItem(position);
         holder.bindData(item);
         holder.mBinding.commentDelete.setOnClickListener(v -> {
-            ToastManager.showToast("删除帖子功能暂时");
+            InteractionPresenter.deleteFeedComment(mContext, item.itemId, item.commentId)
+                    .observe((LifecycleOwner) mContext, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(Boolean isSuccess) {
+                            if (isSuccess) {
+                                deleteAndRefresList(item);
+                            }
+                        }
+                    });
+
         });
         holder.mBinding.commentCover.setOnClickListener(v -> {
             boolean isVideo = item.commentType == Comment.COMMENT_TYPE_VIDEO;
@@ -82,12 +97,57 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
                 mBinding.commentExt.setVisibility(View.VISIBLE);
                 mBinding.commentCover.setVisibility(View.VISIBLE);
                 mBinding.commentCover.bindData(item.width, item.height, 0, PixUtils.dp2px(200), PixUtils.dp2px(200), item.imageUrl);
+                if (!TextUtils.isEmpty(item.videoUrl)) {
+                    mBinding.videoIcon.setVisibility(View.VISIBLE);
+                } else {
+                    mBinding.videoIcon.setVisibility(View.GONE);
+                }
             } else {
                 mBinding.commentCover.setVisibility(View.GONE);
                 mBinding.videoIcon.setVisibility(View.GONE);
                 mBinding.commentExt.setVisibility(View.GONE);
             }
         }
+    }
+
+
+    // 添加并刷新列表
+    public void addAndRefreshList(Comment comment) {
+        PagedList<Comment> currentList = getCurrentList();
+        MutableItemKeyDataSource<Integer, Comment> mutableItemKeyDataSource
+                = new MutableItemKeyDataSource<Integer, Comment>((ItemKeyedDataSource) currentList.getDataSource()) {
+            @NonNull
+            @Override
+            public Integer getKey(@NonNull Comment item) {
+                return item.id;
+            }
+        };
+        // 将新的评论放到第一条的位置
+        mutableItemKeyDataSource.data.add(comment);
+        mutableItemKeyDataSource.data.addAll(currentList);
+        PagedList<Comment> pagedList = mutableItemKeyDataSource.buildNewPagedList(currentList.getConfig());
+        submitList(pagedList);
+    }
+
+
+    // 删除并刷新数据
+    public void deleteAndRefresList(Comment item) {
+        MutableItemKeyDataSource<Integer, Comment> dataSource = new MutableItemKeyDataSource<Integer, Comment>((ItemKeyedDataSource) getCurrentList().getDataSource()) {
+            @NonNull
+            @Override
+            public Integer getKey(@NonNull Comment item) {
+                return item.id;
+            }
+        };
+        PagedList<Comment> currentList = getCurrentList();
+        // 过滤掉不会将要删除的数据
+        for (Comment comment : currentList) {
+            if (comment != item) {
+                dataSource.data.add(comment);
+            }
+        }
+        PagedList<Comment> pagedList = dataSource.buildNewPagedList(getCurrentList().getConfig());
+        submitList(pagedList);
     }
 
 }

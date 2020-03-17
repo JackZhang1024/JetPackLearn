@@ -47,7 +47,7 @@ public abstract class ViewHandler {
             @Override
             public void onCurrentListChanged(@Nullable PagedList<Comment> previousList, @Nullable PagedList<Comment> currentList) {
                 boolean empty = currentList.size() <= 0;
-                handleEmpty(empty);
+                handleEmpty(!empty);
             }
         };
         mRecycleView.setAdapter(listAdapter);
@@ -71,6 +71,7 @@ public abstract class ViewHandler {
     public void handleEmpty(boolean hasData) {
         if (hasData) {
             if (mEmptyView != null) {
+                // 移除掉空白的视图
                 listAdapter.removeHeaderView(mEmptyView);
             }
         } else {
@@ -89,11 +90,18 @@ public abstract class ViewHandler {
         if (commentDialog == null) {
             commentDialog = CommentDialog.newInstance(mFeed.itemId);
         }
+        commentDialog.setCommentAddListener(comment -> {
+            handleEmpty(true);
+            listAdapter.addAndRefreshList(comment);
+
+        });
         commentDialog.show(mActivity.getSupportFragmentManager(), "comment_dialog");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        if (commentDialog != null && commentDialog.isAdded()) {
+            commentDialog.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void onPause() {

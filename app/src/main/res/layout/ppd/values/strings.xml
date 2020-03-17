@@ -66,6 +66,7 @@
     <string name="register_next">下一步</string>
     <string name="choose_avatar">选择头像</string>
     <string name="register_finish">注册完成</string>
+    <string name="publishing">正在发布</string>
 
     <string-array name="profile_tabs">
         <item>动态</item>

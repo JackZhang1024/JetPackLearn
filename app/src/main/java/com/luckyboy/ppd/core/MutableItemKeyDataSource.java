@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * 一个科比的ItemKeyedDataSource 数据源
+ * 一个可变的ItemKeyedDataSource 数据源
  * <p>
  * 工作原理：我们知道DataSource是会被PagedList持有的
  * <p>
@@ -48,7 +48,8 @@ public abstract class MutableItemKeyDataSource<Key, Value> extends ItemKeyedData
 
     @Override
     public void loadAfter(@NonNull LoadParams<Key> params, @NonNull LoadCallback<Value> callback) {
-        // 一旦  和 当前DataSource 关联的PagedList 被提交到pagedListAdapter 那么 ViewModel中创建的DataSource 就不会
+        // 一旦  和 当前DataSource 关联的PagedList 被提交到pagedListAdapter
+        // 那么 ViewModel中创建的DataSource 就不会被调用了
         // 我们需要在分页的时候 代理以下 原来的DataSource 迫使其继续工作
         if (mDataSource != null) {
             mDataSource.loadAfter(params, callback);

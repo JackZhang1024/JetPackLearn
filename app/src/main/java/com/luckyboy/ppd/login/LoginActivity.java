@@ -1,7 +1,7 @@
 package com.luckyboy.ppd.login;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -14,6 +14,8 @@ import com.luckyboy.jetpacklearn.databinding.ActivityPpdLoginBinding;
 import com.luckyboy.libcommon.utils.StatusBar;
 import com.luckyboy.libcommon.utils.ToastManager;
 import com.luckyboy.ppd.login.model.UserViewModel;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.Tencent;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initObservers() {
-        userViewModel.name.observe(this, value -> {
+        userViewModel.phone.observe(this, value -> {
 
         });
         userViewModel.password.observe(this, value -> {
@@ -65,6 +67,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void doLogin(View view) {
         userViewModel.login();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.REQUEST_LOGIN) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, userViewModel.loginListener);
+        }
     }
 
 }

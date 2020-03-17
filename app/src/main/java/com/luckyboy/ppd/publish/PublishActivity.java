@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@ActivityDestination(pageUrl = "main/tabs/publish", needLogin = false)
+@ActivityDestination(pageUrl = "main/tabs/publish", needLogin = true)
 public class PublishActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "PublishActivity";
     private ActivityLayoutPublishBinding mBinding;

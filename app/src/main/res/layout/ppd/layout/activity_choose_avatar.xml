@@ -76,6 +76,7 @@
 
         <!--  请用一句话来描述自己 -->
         <LinearLayout
+            android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -85,14 +86,35 @@
             app:layout_constraintTop_toBottomOf="@+id/user_avatar">
 
             <EditText
+                android:id="@+id/et_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="取一个昵称"
+                android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
+                android:singleLine="true"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!--  请用一句话来描述自己 -->
+        <LinearLayout
+            android:id="@+id/user_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/user_name">
+
+            <EditText
                 android:id="@+id/et_user_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="请用一句话来描述自己"
-                android:singleLine="true"
-                android:textSize="16sp"
                 android:onTextChanged="@{(text, start, before, count)->model.onUserDescriptionChanged(text)}"
-                />
+                android:singleLine="true"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

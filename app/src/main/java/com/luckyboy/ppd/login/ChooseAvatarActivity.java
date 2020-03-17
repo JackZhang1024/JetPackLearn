@@ -2,7 +2,6 @@ package com.luckyboy.ppd.login;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -49,7 +48,7 @@ public class ChooseAvatarActivity extends AppCompatActivity {
 
     private static final int TAKE_PHOTO_REQUEST = 100;
     private static final int GALLERY_REQUEST_CODE = 101;
-    private static final String USER_NAME = "user_name";
+    private static final String USER_PHONE = "user_name";
     private static final String USER_PWD = "user_pwd";
 
     private File mUserAvatarUserFile;
@@ -57,7 +56,7 @@ public class ChooseAvatarActivity extends AppCompatActivity {
 
     public static void startChooseAvatarActivityForResult(Activity context, String userName, String passWord) {
         Intent intent = new Intent(context, ChooseAvatarActivity.class);
-        intent.putExtra(USER_NAME, userName);
+        intent.putExtra(USER_PHONE, userName);
         intent.putExtra(USER_PWD, passWord);
         context.startActivityForResult(intent, REGISTER_REQUEST_CODE);
     }
@@ -78,7 +77,7 @@ public class ChooseAvatarActivity extends AppCompatActivity {
             finish();
         });
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        mUserViewModel.name.setValue(getIntent().getStringExtra(USER_NAME));
+        mUserViewModel.phone.setValue(getIntent().getStringExtra(USER_PHONE));
         mUserViewModel.password.setValue(getIntent().getStringExtra(USER_PWD));
         mUserViewModel.status.observe(this, new Observer<String>() {
             @Override
@@ -233,6 +232,11 @@ public class ChooseAvatarActivity extends AppCompatActivity {
         String userAvatarFilePath = mBinding.getUserAvatarPath();
         if (TextUtils.isEmpty(userAvatarFilePath)) {
             ToastManager.showToast("你还没有选择头像");
+            return;
+        }
+        String name = mUserViewModel.name.getValue();
+        if (TextUtils.isEmpty(name)) {
+            ToastManager.showToast("您还没有取昵称呢");
             return;
         }
         String description = mUserViewModel.userDescription.getValue();

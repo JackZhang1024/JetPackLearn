@@ -2,6 +2,7 @@ package com.luckyboy.ppd;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "HomeActivity";
+
     private NavController navController;
     private BottomNavigationView nav;
 
@@ -47,12 +50,14 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // 判断是否需要登录
+        Log.e(TAG, "onNavigationItemSelected: ");
         HashMap<String, Destination> destinationHashMap = AppConfig.getDestinationConfig();
         Iterator<Map.Entry<String, Destination>> iterator = destinationHashMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Destination> entry = iterator.next();
             Destination destination = entry.getValue();
             if (destination != null && !UserManager.get().isLogin() && destination.needLogin && item.getItemId() == destination.id) {
+                Log.e(TAG, "onNavigationItemSelected: 执行了多次？？");
                 // 进行登录页面跳转
                 UserManager.get().login(this).observe(this, new Observer<User>() {
                     @Override
@@ -75,6 +80,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         int homeDestinationId = navController.getGraph().getStartDestination();
         // 如果当前页面的destinationId和首页的不一致 则跳转到首页
         if (currentDestinationId != homeDestinationId) {
+            Log.e(TAG, "onBackPressed: 跳转到首页");
             nav.setSelectedItemId(homeDestinationId);
             return;
         }

@@ -46,7 +46,7 @@
             android:hint="@string/et_phone"
             android:maxLength="11"
             android:inputType="number"
-            android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
+            android:onTextChanged="@{(text, start, before, count)->model.onPhoneChanged(text)}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_register_hint"/>
 

@@ -39,7 +39,7 @@ class WelcomeFragment:Fragment(){
                     popExit = R.anim.common_slide_out_right
                 }
             }
-//            val name = "Jack"
+//            val phone = "Jack"
             var name = AppPrefsUtils.getString(BaseConstant.SP_USER_NAME)
             // Navigation传递参数
             val bundle = Bundle()
