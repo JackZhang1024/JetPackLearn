@@ -109,7 +109,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:drawableRight="@drawable/icon_cell_liked_large"
-            tools:text="1000"></TextView>
+            tools:text="1000"/>
 
         <ImageView
             android:id="@+id/comment_delete"

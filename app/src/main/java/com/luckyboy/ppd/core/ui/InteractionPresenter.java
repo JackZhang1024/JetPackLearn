@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.alibaba.fastjson.JSONObject;
+import com.luckyboy.libcommon.extension.LiveDataBus;
 import com.luckyboy.libcommon.global.AppGlobals;
 import com.luckyboy.libcommon.utils.ToastManager;
 import com.luckyboy.libnetwork.ApiResponse;
@@ -46,7 +47,7 @@ public class InteractionPresenter {
         })) {
 
         } else {
-            // 用户已经登录 嗲用接口
+            // 用户已经登录 不用登录接口
             toggleFeedLikeInternal(feed);
         }
     }
@@ -59,7 +60,10 @@ public class InteractionPresenter {
                     @Override
                     public void onSuccess(ApiResponse<JSONObject> response) {
                         if (response.body != null) {
-                            Log.e(TAG, "onSuccess: " + response.body);
+                            boolean hasLiked = response.body.getBooleanValue("hasLiked");
+                            feed.getUgc().setHasLiked(hasLiked);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
                         }
                     }
 
@@ -92,9 +96,8 @@ public class InteractionPresenter {
             public void onChanged(User user) {
                 toggleFeedLikeInternal(feed);
             }
-        })) {
-
-        } else {
+        })) {}
+        else {
             toggleFeedDissInternal(feed);
         }
     }
@@ -107,9 +110,9 @@ public class InteractionPresenter {
                     @Override
                     public void onSuccess(ApiResponse<JSONObject> response) {
                         if (response.body != null) {
-
+                            boolean hasLiked = response.body.getBooleanValue("hasLiked");
+                            feed.getUgc().setHasdiss(hasLiked);
                         }
-                        Log.e(TAG, "onSuccess: ");
                     }
 
                     @Override
@@ -140,17 +143,20 @@ public class InteractionPresenter {
 
     private static void toggleCommentLikeInternal(Comment comment) {
         ApiService.get(URL_TOGGLE_COMMENT_LIKE)
-                .addParam("commentId", comment.id)
+                .addParam("commentId", comment.commentId)
                 .addParam("userId", UserManager.get().getUserId())
                 .execute(new JsonCallback<JSONObject>() {
                     @Override
                     public void onSuccess(ApiResponse<JSONObject> response) {
-
+                        if (response.body != null) {
+                            boolean hasLiked = response.body.getBooleanValue("hasLiked");
+                            comment.ugc.setHasLiked(hasLiked);
+                        }
                     }
 
                     @Override
                     public void onError(ApiResponse<JSONObject> response) {
-
+                        ToastManager.showToast(response.message);
                     }
                 });
     }
@@ -220,6 +226,80 @@ public class InteractionPresenter {
                 });
     }
 
+    // 关注/取消关注一个用户
+    public static void toggleFollowUser(LifecycleOwner owner, Feed feed) {
+        if (!isLogin(owner, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                toggleFollowUser(feed);
+            }
+        })) {
+        } else {
+            toggleFollowUser(feed);
+        }
+    }
+
+    private static void toggleFollowUser(Feed feed) {
+        ApiService.get("/ugc/toggleUserFollow/")
+                .addParam("followUserId", UserManager.get().getUserId())
+                .addParam("userId", feed.author.userId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        super.onSuccess(response);
+                        boolean hasFollow = response.body.getBooleanValue("hasLiked");
+                        feed.getAuthor().setHasFollow(hasFollow);
+                        // TODO: 2020-03-18 LiveDatatBus
+                        LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                .postValue(feed);
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        super.onError(response);
+                        ToastManager.showToast(response.message);
+                    }
+                });
+    }
+
+
+    // 收藏/取消收藏一个帖子
+    public static void toggleFeedFavorite(LifecycleOwner owner, Feed feed) {
+        if (!isLogin(owner, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                toggleFeedFavorite(feed);
+            }
+        })) {
+
+        } else {
+            toggleFeedFavorite(feed);
+        }
+    }
+
+    private static void toggleFeedFavorite(Feed feed) {
+        ApiService.get("/ugc/toggleFavorite")
+                .addParam("itemId", feed.itemId)
+                .addParam("userId", UserManager.get().getUserId())
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        super.onSuccess(response);
+                        if (response.body != null) {
+                            boolean hasFavorite = response.body.getBooleanValue("hasFavorite");
+                            feed.ugc.setHasFavorite(hasFavorite);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        super.onError(response);
+                        ToastManager.showToast(response.message);
+                    }
+                });
+    }
 
 
 }

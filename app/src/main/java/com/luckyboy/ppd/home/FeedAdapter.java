@@ -1,6 +1,7 @@
 package com.luckyboy.ppd.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +19,9 @@ import com.luckyboy.jetpacklearn.R;
 import com.luckyboy.jetpacklearn.databinding.LayoutFeedTypeImageBinding;
 import com.luckyboy.jetpacklearn.databinding.LayoutFeedTypeVideoBinding;
 import com.luckyboy.libcommon.extension.AbsPagedListAdapter;
+import com.luckyboy.libcommon.extension.LiveDataBus;
 import com.luckyboy.ppd.core.model.Feed;
+import com.luckyboy.ppd.core.ui.InteractionPresenter;
 import com.luckyboy.ppd.core.view.ListPlayerView;
 import com.luckyboy.ppd.detail.FeedDetailActivity;
 
@@ -68,11 +73,39 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolde
             // 跳转到详情页面
             FeedDetailActivity.startFeedDetailActivity(mContext, feed, mCategory);
             onStartFeedDetailActivity(feed);
+            if (mFeedObserver == null) {
+                mFeedObserver = new FeedObserver();
+                LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
+                        .observe((LifecycleOwner) mContext, mFeedObserver);
+            }
+            mFeedObserver.setFeed(feed);
         });
     }
 
     public void onStartFeedDetailActivity(Feed feed) {
 
+    }
+
+    private FeedObserver mFeedObserver;
+
+    private class FeedObserver implements Observer<Feed> {
+        private static final String TAG = "FeedObserver";
+        private Feed mFeed;
+
+        @Override
+        public void onChanged(Feed newOne) {
+            if (mFeed.id != newOne.id) {
+                return;
+            }
+            Log.e(TAG, "onChanged: old "+mFeed.ugc.hasLiked+" new "+newOne.ugc.hasLiked);
+            mFeed.author = newOne.author;
+            mFeed.ugc = newOne.ugc;
+            mFeed.notifyChange();
+        }
+
+        public void setFeed(Feed feed) {
+            mFeed = feed;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -89,8 +122,6 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolde
             // 这里之所以手动绑定数据的原因是 图片和视频区域都是需要计算的
             // 而dataBinding的执行默认是延迟一帧的
             // 当列表上下滑动的时候 会明显的看到宽高尺寸比对称的问题
-
-
             mBinding.setVariable(com.luckyboy.jetpacklearn.BR.feed, item);
             mBinding.setVariable(com.luckyboy.jetpacklearn.BR.lifeCycleOwner, mContext);
             if (mBinding instanceof LayoutFeedTypeImageBinding) {

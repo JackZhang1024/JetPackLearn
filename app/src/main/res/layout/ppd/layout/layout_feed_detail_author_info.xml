@@ -103,6 +103,7 @@
             app:strokeColor="@{fullScreen?@color/color_white:@color/transparent}"
             app:strokeWidth="1dp"
             tools:text="已关注"
+            android:onClick="@{()->InteractionPresenter.toggleFollowUser(owner, feed)}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

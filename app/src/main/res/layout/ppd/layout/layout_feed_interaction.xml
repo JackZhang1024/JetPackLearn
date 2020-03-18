@@ -81,7 +81,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
-            android:onClick="@{()->InteractionPresenter.toggleCommentLike(lifeCycleOwner, feed.topComment)}"
             android:text="@{feed.ugc.commentCount>0? StringConvert.convertFeedUgc(feed.ugc.commentCount):@string/feed_comment}"
             android:textColor="@color/color_3d3"
             android:textSize="14sp"

@@ -23,8 +23,6 @@
 
         <import type="android.content.Context" />
 
-
-
     </data>
 
     <LinearLayout
@@ -68,7 +66,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:onClick="@{()->InteractionPresenter.toggleFeedLike(owner, feed)}"
+                >
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
@@ -93,13 +93,15 @@
 
             </LinearLayout>
 
-            <!--  收藏           -->
+            <!--  收藏  -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:onClick="@{()->InteractionPresenter.toggleFeedFavorite(owner, feed)}"
+                >
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
@@ -130,7 +132,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:onClick="@{()->InteractionPresenter.openShare(((Context)owner), feed)}"
+                >
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
