@@ -86,7 +86,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/tag_title"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="关注" />
+                tools:text="关注"
+                android:onClick="@{()->InteractionPresenter.toggleTagLike(owner, tagList)}"
+                />
 
             <View
                 android:id="@+id/top_line"

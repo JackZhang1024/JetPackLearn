@@ -19,6 +19,7 @@ import com.luckyboy.libnetwork.ApiService;
 import com.luckyboy.libnetwork.JsonCallback;
 import com.luckyboy.ppd.core.model.Comment;
 import com.luckyboy.ppd.core.model.Feed;
+import com.luckyboy.ppd.core.model.TagList;
 import com.luckyboy.ppd.core.model.User;
 import com.luckyboy.ppd.login.UserManager;
 
@@ -96,8 +97,8 @@ public class InteractionPresenter {
             public void onChanged(User user) {
                 toggleFeedLikeInternal(feed);
             }
-        })) {}
-        else {
+        })) {
+        } else {
             toggleFeedDissInternal(feed);
         }
     }
@@ -173,6 +174,45 @@ public class InteractionPresenter {
                 }
             }
         };
+    }
+
+    // 删除某个帖子
+    public static LiveData<Boolean> deleteFeed(Context context, long itemId) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("取消", ((dialog, which) -> {
+                    dialog.dismiss();
+                }))
+                .setPositiveButton("确定", (dialog, which) -> {
+                    dialog.dismiss();
+                    deleteFeedInternal(liveData, itemId);
+                })
+                .setMessage("确定要删除这条评论吗？")
+                .create()
+                .show();
+        return liveData;
+    }
+
+    private static void deleteFeedInternal(MutableLiveData<Boolean> liveData, long itemId) {
+        ApiService.get("/feeds/deleteFeed")
+                .addParam("itemId", itemId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        super.onSuccess(response);
+                        if (response.body!=null){
+                            boolean success = response.body.getBooleanValue("result");
+                            liveData.postValue(success);
+                            ToastManager.showToast("删除成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        super.onError(response);
+                        ToastManager.showToast(response.message);
+                    }
+                });
     }
 
 
@@ -290,6 +330,42 @@ public class InteractionPresenter {
                             feed.ugc.setHasFavorite(hasFavorite);
                             LiveDataBus.get().with(DATA_FROM_INTERACTION)
                                     .postValue(feed);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        super.onError(response);
+                        ToastManager.showToast(response.message);
+                    }
+                });
+    }
+
+
+    // 关注/取消一个帖子标签
+    public static void toggleTagLike(LifecycleOwner owner, TagList tagList) {
+        if (!isLogin(owner, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                toggleTagLikeInternal(tagList);
+            }
+        })) {
+        } else {
+            toggleTagLikeInternal(tagList);
+        }
+    }
+
+    private static void toggleTagLikeInternal(TagList tagList) {
+        ApiService.get("/tag/toggleTagFollow")
+                .addParam("tagId", tagList.tagId)
+                .addParam("userId", UserManager.get().getUserId())
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        super.onSuccess(response);
+                        if (response.body != null) {
+                            boolean follow = response.body.getBooleanValue("hasFollow");
+                            tagList.setHasFollow(follow);
                         }
                     }
 

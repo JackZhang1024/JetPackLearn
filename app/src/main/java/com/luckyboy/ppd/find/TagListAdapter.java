@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import com.luckyboy.jetpacklearn.databinding.LayoutTagListItemBinding;
 import com.luckyboy.libcommon.extension.AbsPagedListAdapter;
 import com.luckyboy.libcommon.utils.ToastManager;
 import com.luckyboy.ppd.core.model.TagList;
+import com.luckyboy.ppd.core.ui.InteractionPresenter;
 
 public class TagListAdapter extends AbsPagedListAdapter<TagList, TagListAdapter.ViewHolder> {
 
@@ -46,7 +48,7 @@ public class TagListAdapter extends AbsPagedListAdapter<TagList, TagListAdapter.
         final TagList item = getItem(position);
         holder.bindData(item);
         holder.mItemBinding.actionFollow.setOnClickListener(v -> {
-            ToastManager.showToast("点击进行关注 还没有做好呢");
+            InteractionPresenter.toggleTagLike(((LifecycleOwner) mContext), item);
         });
         holder.itemView.setOnClickListener(v-> {
             TagFeedListActivity.startActivity(mContext, item);

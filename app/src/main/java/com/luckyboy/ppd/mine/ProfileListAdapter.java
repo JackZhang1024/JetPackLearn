@@ -5,11 +5,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
 import com.luckyboy.jetpacklearn.R;
 import com.luckyboy.ppd.core.MutableItemKeyDataSource;
 import com.luckyboy.ppd.core.model.Feed;
+import com.luckyboy.ppd.core.ui.InteractionPresenter;
 import com.luckyboy.ppd.core.util.TimeUtils;
 import com.luckyboy.ppd.home.FeedAdapter;
 import com.luckyboy.ppd.login.UserManager;
@@ -50,15 +52,15 @@ public class ProfileListAdapter extends FeedAdapter {
         deleteView.setOnClickListener(v -> {
             //如果是个人主页的评论tab，删除的时候，实际上是删除帖子的评论。
             if (isCommentTab) {
-//                InteractionPresenter.deleteFeedComment(mContext, feed.itemId, feed.topComment.commentId)
-//                        .observe((LifecycleOwner) mContext, success -> {
-//                            refreshList(feed);
-//                        });
+                InteractionPresenter.deleteFeedComment(mContext, feed.itemId, feed.topComment.commentId)
+                        .observe((LifecycleOwner) mContext, success -> {
+                            refreshList(feed);
+                        });
             } else {
-//                InteractionPresenter.deleteFeed(mContext, feed.itemId)
-//                        .observe((LifecycleOwner) mContext, success -> {
-//                            refreshList(feed);
-//                        });
+                InteractionPresenter.deleteFeed(mContext, feed.itemId)
+                        .observe((LifecycleOwner) mContext, success -> {
+                            refreshList(feed);
+                        });
             }
         });
     }

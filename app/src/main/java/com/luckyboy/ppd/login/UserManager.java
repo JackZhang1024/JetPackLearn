@@ -3,6 +3,7 @@ package com.luckyboy.ppd.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,7 +18,7 @@ import com.luckyboy.ppd.core.model.User;
 
 // 用户管理
 public class UserManager {
-
+    private static final String TAG = "UserManager";
     private static final String KEY_CACHE_USER = "cache_user";
 
     private static UserManager mUserManager = new UserManager();
@@ -68,6 +69,7 @@ public class UserManager {
                 .execute(new JsonCallback<User>() {
                     @Override
                     public void onSuccess(ApiResponse<User> response) {
+                        Log.e(TAG, "onSuccess: 用户信息查询 " + response.body.avatar);
                         save(response.body);
                         liveData.postValue(getUser());
                     }
