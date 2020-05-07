@@ -8,8 +8,7 @@
             type="com.luckyboy.ppd.login.model.UserViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -62,6 +61,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
+            android:singleLine="true"
             android:hint="@string/et_phone"
             android:onTextChanged="@{(text, start, before, count)->model.onPhoneChanged(text)}"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -77,7 +77,9 @@
             android:hint="@string/et_pwd"
             android:onTextChanged="@{(text, start, before, count)->model.onPasswordChanged(text)}"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_phone" />
+            app:layout_constraintTop_toBottomOf="@id/et_phone"
+            android:singleLine="true"
+            />
 
         <TextView
             android:id="@+id/tv_forgot_pwd"
@@ -137,29 +139,26 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_pwd"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="20dp"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd">
 
             <ImageView
                 android:id="@+id/iv_qq_login"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/icon_qq_login"
-                />
+                android:src="@drawable/icon_qq_login" />
 
             <ImageView
                 android:id="@+id/iv_wechat_login"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/icon_wechat_login"
-                />
+                android:src="@drawable/icon_wechat_login" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

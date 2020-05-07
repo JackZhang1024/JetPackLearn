@@ -62,7 +62,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 UserManager.get().login(this).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
-                        nav.setSelectedItemId(item.getItemId());
+                        if (user!=null){
+                            Log.e(TAG, "onChanged: user "+(user==null));
+                            nav.setSelectedItemId(item.getItemId());
+                        }
                     }
                 });
                 return false;
@@ -87,5 +90,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         // 否则 finish 这里不宜调用 onBackPressed() 因为navigation 会操作回退栈 切换到之前显示的页面
         finish();
     }
+
+
 
 }

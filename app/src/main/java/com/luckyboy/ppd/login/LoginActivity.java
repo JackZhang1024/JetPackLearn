@@ -2,6 +2,7 @@ package com.luckyboy.ppd.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.luckyboy.jetpacklearn.R;
 import com.luckyboy.jetpacklearn.databinding.ActivityPpdLoginBinding;
+import com.luckyboy.jetpacklearn.databinding.ActivityPpdLoginNewBinding;
 import com.luckyboy.libcommon.utils.StatusBar;
 import com.luckyboy.libcommon.utils.ToastManager;
 import com.luckyboy.ppd.login.model.UserViewModel;
@@ -21,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    ActivityPpdLoginBinding binding;
+    ActivityPpdLoginNewBinding binding;
 
     private UserViewModel userViewModel;
 
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_ppd_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_ppd_login_new);
         binding.toolbar.setNavigationOnClickListener((view) -> {
             finish();
         });
@@ -66,6 +68,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void doLogin(View view) {
+        String userName = userViewModel.phone.getValue();
+        String userPwd = userViewModel.password.getValue();
+        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(userPwd)){
+            ToastManager.showToast("用户名或者密码不能为空");
+            return;
+        }
         userViewModel.login();
     }
 

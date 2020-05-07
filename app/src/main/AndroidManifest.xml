@@ -70,8 +70,12 @@
         <activity
             android:name="com.luckyboy.ppd.publish.PublishActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.luckyboy.ppd.login.LoginActivity" />
-        <activity android:name="com.luckyboy.ppd.login.RegisterActivity" />
+        <activity android:name="com.luckyboy.ppd.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name="com.luckyboy.ppd.login.RegisterActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity android:name="com.luckyboy.ppd.login.ChooseAvatarActivity"/>
         <activity
             android:name="com.tencent.tauth.AuthActivity"

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.luckyboy.jetpacklearn.R;
 import com.luckyboy.jetpacklearn.databinding.ActivityPpdRegisterBinding;
+import com.luckyboy.jetpacklearn.databinding.ActivityPpdRegisterNewBinding;
 import com.luckyboy.libcommon.utils.StatusBar;
 import com.luckyboy.libcommon.utils.ToastManager;
 import com.luckyboy.ppd.login.model.UserViewModel;
@@ -25,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
         context.startActivity(new Intent(context, RegisterActivity.class));
     }
 
-    ActivityPpdRegisterBinding binding;
+    ActivityPpdRegisterNewBinding binding;
 
     UserViewModel registerModel;
 
@@ -33,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_ppd_register);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_ppd_register_new);
         binding.toolbar.setNavigationOnClickListener((view) -> {
             finish();
         });

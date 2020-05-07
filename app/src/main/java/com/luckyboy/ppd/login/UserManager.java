@@ -87,6 +87,7 @@ public class UserManager {
     public void logout() {
         CacheManager.delete(KEY_CACHE_USER, mUser);
         mUser = null;
+        userLiveData.setValue(null);
     }
 
     public LiveData<User> login(Context context) {
