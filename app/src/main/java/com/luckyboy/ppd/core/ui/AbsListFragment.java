@@ -2,6 +2,7 @@ package com.luckyboy.ppd.core.ui;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,16 @@ import com.luckyboy.jetpacklearn.R;
 import com.luckyboy.jetpacklearn.databinding.FragmentFreshBinding;
 import com.luckyboy.libcommon.view.EmptyView;
 import com.luckyboy.ppd.core.AbsViewModel;
+import com.luckyboy.ppd.core.util.RecyclerViewUtils;
+import com.luckyboy.ppd.core.view.LoadMoreDecoration;
+import com.luckyboy.ppd.core.view.PPDClassicHeader;
 import com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -33,18 +43,20 @@ import java.lang.reflect.Type;
 // T 表示我列表想要的数据类型 M 表示我想要的ViewModel 一些重要的业务逻辑操作都在里面了
 public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragment {
 
+    private static final String TAG = "AbsListFragment";
     protected FragmentFreshBinding binding;
 
-    protected RecyclerView mRecycleView;
+    protected SwipeRecyclerView mRecycleView;
 
-    protected PPDTwinkRefreshLayout mTwinkRefreshLayout;
+    protected SmartRefreshLayout mTwinkRefreshLayout;
 
     protected EmptyView mEmptyView;
 
     protected PagedListAdapter<T, RecyclerView.ViewHolder> adapter;
     protected M mViewModel;
 
-    protected DividerItemDecoration decoration;
+    protected LoadMoreDecoration decoration;
+
 
     @Nullable
     @Override
@@ -56,17 +68,29 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         mEmptyView = binding.emptyView;
         adapter = getAdapter();
 
+        RecyclerViewUtils viewUtils = new RecyclerViewUtils();
+        viewUtils.initRecyclerView(getContext(), mRecycleView, new SwipeRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                // 加载更多数据操作
+                Log.e(TAG, "onLoadMore: 加载更多");
+                onTwinkLoadMore(null);
+            }
+        });
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        //mRecycleView.addItemDecoration(new LoadMoreDecoration(getContext(), DividerItemDecoration.VERTICAL));
         mRecycleView.setItemAnimator(null);
 
-        decoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        decoration = new LoadMoreDecoration(getContext(), LinearLayoutManager.VERTICAL);
         decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.list_divider));
         mRecycleView.addItemDecoration(decoration);
         mRecycleView.setAdapter(adapter);
+        mTwinkRefreshLayout.setEnableRefresh(true);
+        mTwinkRefreshLayout.setEnableLoadMore(false);
+        mTwinkRefreshLayout.setRefreshHeader(new PPDClassicHeader(getContext()));
         mTwinkRefreshLayout.setOnRefreshListener(new TwinkRefreshListener());
         genericViewModel();
         return binding.getRoot();
-
     }
 
 
@@ -91,7 +115,7 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
             mViewModel.getBoundaryPageData().observe(this, new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean hasData) {
-                    finishRefresh(hasData);
+                    finishRefresh(hasData, true);
                 }
             });
         }
@@ -102,20 +126,22 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         if (pagedList.size() > 0) {
             adapter.submitList(pagedList);
         }
-        finishRefresh(pagedList.size() > 0);
+        finishRefresh(pagedList.size() > 0, true);
     }
 
-    public void finishRefresh(boolean hasData) {
+    public void finishRefresh(boolean hasData, boolean loadMore) {
         PagedList<T> currentList = adapter.getCurrentList();
         hasData = hasData || currentList != null && currentList.size() > 0;
-        if (mTwinkRefreshLayout.isRefreshState()) {
-            mTwinkRefreshLayout.finishRefreshing();
-        } else if (mTwinkRefreshLayout.isLoadMoreState()) {
-            mTwinkRefreshLayout.finishLoadmore();
+        if (mTwinkRefreshLayout.getState() == RefreshState.Refreshing) {
+            mTwinkRefreshLayout.finishRefresh();
+        } else if (loadMore) {
+            mRecycleView.loadMoreFinish(false, false);
         }
         if (hasData) {
+            mRecycleView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         } else {
+            mRecycleView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
     }
@@ -124,17 +150,10 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
     // 所以 如果 arguments 有参数需要传递到Adapter中 ，那么需要在getAdapter()方法中取出参数
     protected abstract PagedListAdapter<T, RecyclerView.ViewHolder> getAdapter();
 
-    class TwinkRefreshListener extends RefreshListenerAdapter {
-
+    class TwinkRefreshListener implements OnRefreshListener {
         @Override
-        public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
-            onTwinkLoadMore(refreshLayout);
-        }
-
-
-        @Override
-        public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-            onTwinkRefresh(refreshLayout);
+        public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            onTwinkRefresh(null);
         }
     }
 

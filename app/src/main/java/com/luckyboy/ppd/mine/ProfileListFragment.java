@@ -95,7 +95,7 @@ public class ProfileListFragment extends AbsListFragment<Feed, ProfileViewModel>
     @Override
     public void onTwinkLoadMore(TwinklingRefreshLayout layout) {
         PagedList<Feed> currentList = adapter.getCurrentList();
-        finishRefresh(currentList!=null && currentList.size()>0);
+        finishRefresh(currentList!=null && currentList.size()>0, true);
     }
 
     @Override

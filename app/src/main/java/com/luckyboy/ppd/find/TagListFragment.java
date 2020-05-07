@@ -78,7 +78,7 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
                     PagedList<TagList> pagedList = mutableItemKeyDataSource.buildNewPagedList(currentList.getConfig());
                     submitList(pagedList);
                 } else {
-                    finishRefresh(false);
+                    finishRefresh(false, true);
                 }
             }
         });

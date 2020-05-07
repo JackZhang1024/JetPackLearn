@@ -86,7 +86,7 @@ public class UserBehaviorListFragment extends AbsListFragment<Feed, UserBehavior
     @Override
     public void onTwinkLoadMore(TwinklingRefreshLayout layout) {
         PagedList<Feed> currentList = adapter.getCurrentList();
-        finishRefresh(currentList!=null && currentList.size()>0);
+        finishRefresh(currentList!=null && currentList.size()>0, true);
     }
 
     @Override

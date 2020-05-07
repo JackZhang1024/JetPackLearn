@@ -9,27 +9,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
-        <com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/twk_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:tr_head_height="80dp"
             >
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.yanzhenjie.recyclerview.SwipeRecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"
+                android:fadingEdge="none"
+                >
 
-        </com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout>
+            </com.yanzhenjie.recyclerview.SwipeRecyclerView>
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <!--        <com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout-->
+        <!--            android:id="@+id/twk_refresh_layout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            app:tr_head_height="80dp"-->
+        <!--            >-->
+
+        <!--            <androidx.recyclerview.widget.RecyclerView-->
+        <!--                android:id="@+id/rv"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:background="#ffffff"-->
+        <!--                android:overScrollMode="never" />-->
+
+        <!--        </com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout>-->
 
         <com.luckyboy.libcommon.view.EmptyView
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </FrameLayout>
 </layout>
 

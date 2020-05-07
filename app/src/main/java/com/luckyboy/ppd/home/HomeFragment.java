@@ -70,7 +70,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     public void onTwinkLoadMore(TwinklingRefreshLayout layout) {
         final PagedList<Feed> currentList = adapter.getCurrentList();
         if (currentList == null || currentList.size() <= 0) {
-            finishRefresh(false);
+            finishRefresh(false, true);
             return;
         }
         Feed feed = currentList.get(adapter.getItemCount() - 1);
