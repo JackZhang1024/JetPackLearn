@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,7 +17,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -51,8 +49,11 @@ public class CaptureActivity extends AppCompatActivity {
 
     public static final int REQ_CAPTURE = 10001;
     private ActivityLayoutCaptureBinding mBinding;
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
+    private static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO};
     private static final int PERMISSION_CODE = 1000;
     private ArrayList<String> deniedPermission = new ArrayList<>();
     // 使用后置摄像头
@@ -91,8 +92,12 @@ public class CaptureActivity extends AppCompatActivity {
             @Override
             public void onClick() {
                 takingPicture = true;
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".jpeg");
+                File rootFile = Environment.getExternalStorageDirectory();
+                rootFile = getCacheDir();
+                //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".jpeg");
+                File file = new File(rootFile, System.currentTimeMillis() + ".jpeg");
                 mBinding.captureTips.setVisibility(View.INVISIBLE);
+                Log.e(TAG, "onClick: "+file.getAbsolutePath());
                 imageCapture.takePicture(file, new ImageCapture.OnImageSavedListener() {
                     @Override
                     public void onImageSaved(@NonNull File file) {
@@ -110,7 +115,10 @@ public class CaptureActivity extends AppCompatActivity {
             @Override
             public void onLongClick() {
                 takingPicture = false;
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".mp4");
+                File rootFile = Environment.getExternalStorageDirectory();
+                rootFile = getCacheDir();
+                File file = new File(rootFile, System.currentTimeMillis() + ".mp4");
+                //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".mp4");
                 videoCapture.startRecording(file, new VideoCapture.OnVideoSavedListener() {
                     @Override
                     public void onVideoSaved(File file) {
@@ -198,6 +206,7 @@ public class CaptureActivity extends AppCompatActivity {
 
     @SuppressLint("RestrictedApi")
     private void bindCameraX() {
+        Log.e(TAG, "bindCameraX: 绑定CameraX+++++++++++++");
         CameraX.unbindAll();
 
         // 查询一下当前要使用的设备摄像头（比如后置摄像头）是否存在

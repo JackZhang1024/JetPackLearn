@@ -151,6 +151,7 @@ public class CommentDialog extends AppCompatDialogFragment implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CaptureActivity.REQ_CAPTURE && resultCode == Activity.RESULT_OK) {
             filePath = data.getStringExtra(CaptureActivity.RESULT_FILE_PATH);
+            Log.e(TAG, "onActivityResult: "+filePath);
             width = data.getIntExtra(CaptureActivity.RESULT_FILE_WIDTH, 0);
             height = data.getIntExtra(CaptureActivity.RESULT_FILE_HEIGHT, 0);
             isVideo = data.getBooleanExtra(CaptureActivity.RESULT_FILE_TYPE, false);
