@@ -21,12 +21,22 @@ public abstract class AbsViewModel<T> extends ViewModel {
 
     private MutableLiveData<Boolean> boundaryPageData = new MutableLiveData<>();
 
+    DataSource.Factory factory = new DataSource.Factory() {
+        @NonNull
+        @Override
+        public DataSource create() {
+            if (dataSource == null || dataSource.isInvalid()) {
+                dataSource = createDataSource();
+            }
+            return dataSource;
+        }
+    };
 
     public AbsViewModel() {
 
         config = new PagedList.Config.Builder()
-                .setPageSize(10)
-                .setInitialLoadSizeHint(12)
+                .setPageSize(5)
+                .setInitialLoadSizeHint(6)
                 //.setMaxSize(100)
                 //.setEnablePlaceholders(true)
                 //.setPrefetchDistance()
@@ -51,18 +61,19 @@ public abstract class AbsViewModel<T> extends ViewModel {
         return boundaryPageData;
     }
 
+    // BoundaryCallback触发加载更多条件
     PagedList.BoundaryCallback<T> callback = new PagedList.BoundaryCallback<T>() {
         @Override
         public void onZeroItemsLoaded() {
             // 新提交的pagedList中没有数据
-            Log.d(TAG, "onZeroItemsLoaded: ");
+            Log.d(TAG, "onZeroItemsLoaded: ++++++++++++++++++++++");
             boundaryPageData.postValue(false);
         }
 
         @Override
         public void onItemAtFrontLoaded(@NonNull T itemAtFront) {
             // 新提交的PagedList中第一条数据被加载到列表中
-            Log.d(TAG, "onItemAtFrontLoaded: ");
+            Log.d(TAG, "onItemAtFrontLoaded: ++++++++++++++++++++++");
             boundaryPageData.postValue(true);
         }
 
@@ -70,18 +81,6 @@ public abstract class AbsViewModel<T> extends ViewModel {
         public void onItemAtEndLoaded(@NonNull T itemAtEnd) {
             // 新提交的pageList中最后一条数据被加载到列表上
             Log.d(TAG, "onItemAtEndLoaded: ");
-        }
-    };
-
-
-    DataSource.Factory factory = new DataSource.Factory() {
-        @NonNull
-        @Override
-        public DataSource create() {
-            if (dataSource == null || dataSource.isInvalid()) {
-                dataSource = createDataSource();
-            }
-            return dataSource;
         }
     };
 

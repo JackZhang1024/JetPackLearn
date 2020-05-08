@@ -1,5 +1,6 @@
 package com.luckyboy.ppd.home;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -64,7 +65,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         @Override
         public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Feed> callback) {
             // 向后加载分页数据
-            Log.e(TAG, "loadAfter: ");
+            Log.e(TAG, "loadAfter: 加载更多数据.......");
             loadData(params.key, params.requestedLoadSize, callback);
         }
 
@@ -132,6 +133,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         Log.e(TAG, "loadData: key " + key);
     }
 
+    @SuppressLint("RestrictedApi")
     public void loadAfter(int id, ItemKeyedDataSource.LoadCallback<Feed> callback) {
         if (loadAfter.get()) {
             callback.onResult(Collections.emptyList());

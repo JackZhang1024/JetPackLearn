@@ -33,6 +33,9 @@ import com.luckyboy.ppd.core.exoplayer.PageListPlayDetector;
 import com.luckyboy.ppd.core.exoplayer.PageListPlayerManager;
 import com.luckyboy.ppd.core.model.Feed;
 import com.luckyboy.ppd.core.model.TagList;
+import com.luckyboy.ppd.core.util.RecyclerViewUtils;
+import com.luckyboy.ppd.core.view.LoadMoreDecoration;
+import com.luckyboy.ppd.core.view.PPDClassicHeader;
 import com.luckyboy.ppd.core.view.PPDTwinkRefreshLayout;
 import com.luckyboy.ppd.home.FeedAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -40,15 +43,16 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
-public class TagFeedListActivity extends AppCompatActivity implements View.OnClickListener, OnRefreshListener, OnLoadMoreListener {
+public class TagFeedListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "TagFeedListActivity";
 
     public static final String KEY_TAG_LIST = "tag_list";
     public static final String KEY_FEED_TYPE = "tag_feed_list";
     private ActivityLayoutTagFeedListBinding binding;
-    private RecyclerView recyclerView;
+    private SwipeRecyclerView recyclerView;
     private EmptyView emptyView;
     private SmartRefreshLayout twinklingRefreshLayout;
     private TagList tagList;
@@ -57,6 +61,7 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
     private AbsPagedListAdapter adapter;
     private int totalScrollY;
     private TagFeedListViewModel tagFeedListViewModel;
+    protected LoadMoreDecoration decoration;
 
     public static void startActivity(Context context, TagList tagList) {
         Intent intent = new Intent(context, TagFeedListActivity.class);
@@ -76,17 +81,34 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
         emptyView = binding.refreshLayout.emptyView;
         twinklingRefreshLayout = binding.refreshLayout.refreshLayout;
         binding.actionBack.setOnClickListener(this);
-
+        RecyclerViewUtils viewUtils = new RecyclerViewUtils();
+        viewUtils.initRecyclerView(this, recyclerView, new SwipeRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                // 加载更多数据操作
+                Log.e(TAG, "onLoadMore: 加载更多");
+                PagedList currentList = getAdapter().getCurrentList();
+                finishRefresh(currentList != null && currentList.size() > 0, true);
+                //全权委托给paging框架
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = (AbsPagedListAdapter) getAdapter();
         recyclerView.setAdapter(adapter);
-        DividerItemDecoration decoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        decoration = new LoadMoreDecoration(this, LinearLayoutManager.VERTICAL);
         decoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.list_divider));
         recyclerView.addItemDecoration(decoration);
         recyclerView.setItemAnimator(null);
 
-        twinklingRefreshLayout.setOnRefreshListener(this);
-        twinklingRefreshLayout.setOnLoadMoreListener(this);
+        twinklingRefreshLayout.setEnableRefresh(true);
+        twinklingRefreshLayout.setEnableLoadMore(false);
+        twinklingRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                tagFeedListViewModel.getDataSource().invalidate();
+            }
+        });
+        twinklingRefreshLayout.setRefreshHeader(new PPDClassicHeader(this));
         //twinklingRefreshLayout.setOnRefreshListener(refreshListenerAdapter);
 
         tagList = (TagList) getIntent().getSerializableExtra(KEY_TAG_LIST);
@@ -99,7 +121,7 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
             Log.e(TAG, "onCreate: submitList " + feeds.size());
             submitList(feeds);
         });
-        tagFeedListViewModel.getBoundaryPageData().observe(this, hasData -> finishRefresh(hasData));
+        tagFeedListViewModel.getBoundaryPageData().observe(this, hasData -> finishRefresh(hasData, true));
         playDetector = new PageListPlayDetector(this, recyclerView);
         addHeaderView();
     }
@@ -108,7 +130,7 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
         if (feeds.size() > 0) {
             adapter.submitList(feeds);
         }
-        finishRefresh(feeds.size() > 0);
+        finishRefresh(feeds.size() > 0, true);
     }
 
     private RefreshListenerAdapter refreshListenerAdapter = new RefreshListenerAdapter() {
@@ -120,25 +142,26 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
         @Override
         public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
             PagedList currentList = getAdapter().getCurrentList();
-            finishRefresh(currentList != null && currentList.size() > 0);
+            finishRefresh(currentList != null && currentList.size() > 0, true);
             // 全权委托给paging框架来处理
         }
     };
 
-    private void finishRefresh(boolean hasData) {
+    private void finishRefresh(boolean hasData, boolean loadMore) {
         PagedList currentList = adapter.getCurrentList();
         hasData = currentList != null && currentList.size() > 0 || hasData;
+        if (twinklingRefreshLayout.getState() == RefreshState.Refreshing) {
+            twinklingRefreshLayout.finishRefresh();
+        } else if (loadMore) {
+            // 处于加载更多状态
+            recyclerView.loadMoreFinish(false, false);
+        }
         if (hasData) {
             emptyView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         } else {
             emptyView.setVisibility(View.VISIBLE);
-        }
-
-        RefreshState state = twinklingRefreshLayout.getState();
-        if (state.isOpening && state.isHeader) {
-            twinklingRefreshLayout.finishRefresh();
-        } else if (state.isOpening && state.isFooter) {
-            twinklingRefreshLayout.finishLoadMore();
+            recyclerView.setVisibility(View.GONE);
         }
     }
 
@@ -224,15 +247,4 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        tagFeedListViewModel.getDataSource().invalidate();
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        PagedList currentList = getAdapter().getCurrentList();
-        finishRefresh(currentList != null && currentList.size() > 0);
-        //全权委托给pageing框架
-    }
 }

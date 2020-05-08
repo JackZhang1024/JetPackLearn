@@ -97,9 +97,15 @@ public class VideoViewHandler extends ViewHandler {
     public void onBackPressed() {
         super.onBackPressed();
         backPressed = true;
+        // 播放控制器的高度
+        int ctrlViewHeight = playerView.getPlayController().getMeasuredHeight();
+        // 播放控制器的bottom值
+        int bottom = playerView.getPlayController().getBottom();
         // 按了返回键后需要 恢复 播放控制按钮的位置  否则回到列表时 可能会不正确的显示
-        playerView.getPlayController().setTranslationY(0);
+        //playerView.getPlayController().setTranslationY(0);
+        playerView.getPlayController().setY(bottom - ctrlViewHeight);
     }
+
 
     @Override
     public void onPause() {

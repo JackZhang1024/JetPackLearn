@@ -46,7 +46,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel.getCacheLiveData().observe(this, new Observer<PagedList<Feed>>() {
+        mViewModel.getCacheLiveData().observe(getViewLifecycleOwner(), new Observer<PagedList<Feed>>() {
             @Override
             public void onChanged(PagedList<Feed> feeds) {
                 submitList(feeds);

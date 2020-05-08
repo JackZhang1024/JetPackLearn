@@ -105,14 +105,14 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
             mViewModel = (M) ViewModelProviders.of(this).get(claz);
 
             // 触发页面初始化数据加载的逻辑
-            mViewModel.getPageData().observe(this, new Observer<PagedList<T>>() {
+            mViewModel.getPageData().observe(getViewLifecycleOwner(), new Observer<PagedList<T>>() {
                 @Override
                 public void onChanged(PagedList<T> pagedList) {
                     submitList(pagedList);
                 }
             });
-            // 监听分页时有误更多数据 以决定是否关闭上拉加载的动画
-            mViewModel.getBoundaryPageData().observe(this, new Observer<Boolean>() {
+            // 监听分页时有无更多数据 以决定是否关闭上拉加载的动画
+            mViewModel.getBoundaryPageData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean hasData) {
                     finishRefresh(hasData, true);
@@ -135,6 +135,7 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         if (mTwinkRefreshLayout.getState() == RefreshState.Refreshing) {
             mTwinkRefreshLayout.finishRefresh();
         } else if (loadMore) {
+            // 处于加载更多状态
             mRecycleView.loadMoreFinish(false, false);
         }
         if (hasData) {

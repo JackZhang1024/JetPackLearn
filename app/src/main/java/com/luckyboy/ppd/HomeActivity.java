@@ -50,20 +50,17 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // 判断是否需要登录
-        Log.e(TAG, "onNavigationItemSelected: ");
         HashMap<String, Destination> destinationHashMap = AppConfig.getDestinationConfig();
         Iterator<Map.Entry<String, Destination>> iterator = destinationHashMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, Destination> entry = iterator.next();
             Destination destination = entry.getValue();
             if (destination != null && !UserManager.get().isLogin() && destination.needLogin && item.getItemId() == destination.id) {
-                Log.e(TAG, "onNavigationItemSelected: 执行了多次？？");
                 // 进行登录页面跳转
                 UserManager.get().login(this).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
                         if (user!=null){
-                            Log.e(TAG, "onChanged: user "+(user==null));
                             nav.setSelectedItemId(item.getItemId());
                         }
                     }

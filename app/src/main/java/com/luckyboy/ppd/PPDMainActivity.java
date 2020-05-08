@@ -23,7 +23,7 @@ public class PPDMainActivity extends AppCompatActivity {
         new Handler().postDelayed(()->{
             startActivity(new Intent(PPDMainActivity.this, HomeActivity.class));
             finish();
-        }, 1000);
+        }, 500);
     }
 
 
