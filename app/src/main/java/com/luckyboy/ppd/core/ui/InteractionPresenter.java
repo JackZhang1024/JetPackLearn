@@ -128,6 +128,8 @@ public class InteractionPresenter {
         ToastManager.showToast("打开分享面板");
     }
 
+
+
     // 给一个帖子的评论点赞/取消点赞
     public static void toggleCommentLike(LifecycleOwner owner, Comment comment) {
         if (!isLogin(owner, new Observer<User>() {

@@ -15,6 +15,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.luckyboy.ppd.core.MutableItemKeyDataSource;
 import com.luckyboy.ppd.core.model.TagList;
 import com.luckyboy.ppd.core.ui.AbsListFragment;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e(TAG, "onViewCreated: xxxxxxxx "+tagType);
+        Log.e(TAG, "onViewCreated: xxxxxxxx " + tagType);
         if (TextUtils.equals(tagType, "onlyFollow")) {
             // 刚开始没有数据的时候开始加载数据
             Log.e(TAG, "onViewCreated: 还没有数据 等待重新加载");
@@ -56,7 +57,7 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
 
     // 加载更多数据
     @Override
-    public void onTwinkLoadMore(TwinklingRefreshLayout layout) {
+    public void onLoadMore(RefreshLayout layout) {
         PagedList<TagList> currentList = getAdapter().getCurrentList();
         long tagId = currentList == null ? 0 : currentList.get(currentList.size() - 1).tagId;
         Log.e(TAG, "onTwinkLoadMore: tagId " + tagId);
@@ -78,14 +79,14 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
                     PagedList<TagList> pagedList = mutableItemKeyDataSource.buildNewPagedList(currentList.getConfig());
                     submitList(pagedList);
                 } else {
-                    finishRefresh(false, true);
+                    finishRefresh(false);
                 }
             }
         });
     }
 
     @Override
-    public void onTwinkRefresh(TwinklingRefreshLayout layout) {
+    public void onRefresh(RefreshLayout layout) {
         mViewModel.getDataSource().invalidate();
     }
 }

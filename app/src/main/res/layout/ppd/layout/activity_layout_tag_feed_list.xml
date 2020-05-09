@@ -29,9 +29,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:background="@color/color_white"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            >
 
             <ImageView
                 android:id="@+id/action_back"
