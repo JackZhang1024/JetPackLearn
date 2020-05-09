@@ -29,9 +29,10 @@
             android:id="@+id/player_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
             app:layout_behavior="com.luckyboy.ppd.detail.ViewZoomBehavior"
-            app:scrolling_id="@+id/recycler_view" />
+            app:mini_height = "200dp"
+            app:scrolling_id="@+id/recycler_view"
+            />
 
         <include
             android:id="@+id/author_info"

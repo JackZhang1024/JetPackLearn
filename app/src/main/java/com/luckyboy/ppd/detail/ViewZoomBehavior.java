@@ -63,7 +63,9 @@ public class ViewZoomBehavior extends CoordinatorLayout.Behavior<FullScreenPlaye
         // 告诉ViewDragHelper 什么时候 可以拦截 手指触摸的这个view的手势分发
         @Override
         public boolean tryCaptureView(@NonNull View child, int pointerId) {
-            if (canFullScreen && refChild.getBottom() >= minHeight && refChild.getBottom() <= childOriginalHeight) {
+            if (canFullScreen
+                    && refChild.getBottom() >= minHeight
+                    && refChild.getBottom() <= childOriginalHeight) {
                 return true;
             }
             return false;
@@ -78,7 +80,7 @@ public class ViewZoomBehavior extends CoordinatorLayout.Behavior<FullScreenPlaye
         // 告诉ViewDragHelper 手指拖拽的这个View 本次滑动最终能够移动的距离
         @Override
         public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
-            if (child == null || dy == 0) {
+            if (refChild == null || dy == 0) {
                 return 0;
             }
             // 都是结束位置减去开始位置的坐标差
@@ -88,7 +90,7 @@ public class ViewZoomBehavior extends CoordinatorLayout.Behavior<FullScreenPlaye
             // 手指从下往上滑动（折叠操作）  dy<0 这意味着refChild的底部 会被向上移动 所以 它的底部的最小值 不能小于minHeight
             if (dy < 0 && refChild.getBottom() < minHeight
                     // 手指从上往下滑动(展开操作) dy>0 意味着refChild的底部 会被向下移动 所以它的底部的最大 不能超过父容器的高 也就是 childOriginalHeight
-                    || dy > 0 && refChild.getBottom() > childOriginalHeight
+                    || (dy > 0 && refChild.getBottom() > childOriginalHeight)
                     // 手指 从屏幕上方往下滑动  如果 scrollingView 还没有滑动到列表的最顶部
                     // 也意味着列表还可以下滑动（向列表的第一条方向走）此时 咋们应该让列表自行滑动 不做拦截
                     || (dy > 0 && (scrollingView != null && scrollingView.canScrollVertically(-1)))  // (dy>0 && (scrollingView!=null && scrollingView.canScrollVertically(-1)))
@@ -127,7 +129,6 @@ public class ViewZoomBehavior extends CoordinatorLayout.Behavior<FullScreenPlaye
         @Override
         public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
-            //
             if (refChild.getBottom() > minHeight && refChild.getBottom() < childOriginalHeight && yvel != 0) {
                 refChild.removeCallbacks(runnable);
                 // 在手指离开屏幕的时候继续保持惯性滑动
@@ -139,7 +140,7 @@ public class ViewZoomBehavior extends CoordinatorLayout.Behavior<FullScreenPlaye
 
     @Override
     public boolean onTouchEvent(@NonNull CoordinatorLayout parent, @NonNull FullScreenPlayerView child, @NonNull MotionEvent ev) {
-        if (!canFullScreen && viewDragHelper == null) {
+        if (!canFullScreen || viewDragHelper == null) {
             return super.onTouchEvent(parent, child, ev);
         }
         viewDragHelper.processTouchEvent(ev);

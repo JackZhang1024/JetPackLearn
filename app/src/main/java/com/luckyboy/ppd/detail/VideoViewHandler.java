@@ -35,6 +35,7 @@ public class VideoViewHandler extends ViewHandler {
         params.setBehavior(new ViewAnchorBehavior(R.id.player_view));
 
         mVideoBinding.actionClose.setOnClickListener(v -> {
+            doExitFullScreen();
             mActivity.finish();
         });
 
@@ -48,7 +49,6 @@ public class VideoViewHandler extends ViewHandler {
                 boolean fullScreen = moveUp ? height >= coordinatorLayout.getBottom() - mInteractionBinding.getRoot().getHeight()
                         : height >= coordinatorLayout.getBottom();
                 setViewAppearance(fullScreen);
-
             }
         });
     }
@@ -96,16 +96,19 @@ public class VideoViewHandler extends ViewHandler {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        doExitFullScreen();
+    }
+
+    private void doExitFullScreen() {
         backPressed = true;
         // 播放控制器的高度
         int ctrlViewHeight = playerView.getPlayController().getMeasuredHeight();
         // 播放控制器的bottom值
         int bottom = playerView.getPlayController().getBottom();
         // 按了返回键后需要 恢复 播放控制按钮的位置  否则回到列表时 可能会不正确的显示
-        //playerView.getPlayController().setTranslationY(0);
-        playerView.getPlayController().setY(bottom - ctrlViewHeight);
+        playerView.getPlayController().setTranslationY(0);
+        //playerView.getPlayController().setY(bottom - ctrlViewHeight);
     }
-
 
     @Override
     public void onPause() {

@@ -4,6 +4,7 @@ package com.luckyboy.ppd.core.view;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.luckyboy.ppd.core.exoplayer.PageListPlayerManager;
 // 视频详情页全屏播放专用
 public class FullScreenPlayerView extends ListPlayerView {
 
+    private static final String TAG = "FullScreenPlayerView";
     private PlayerView exoPlayerView;
 
     public FullScreenPlayerView(@NonNull Context context) {
@@ -45,7 +47,7 @@ public class FullScreenPlayerView extends ListPlayerView {
 
     @Override
     protected void setSize(int widthPx, int heightPx) {
-        if (widthPx > heightPx) {
+        if (widthPx >= heightPx) {
             super.setSize(widthPx, heightPx);
             return;
         }
@@ -57,20 +59,21 @@ public class FullScreenPlayerView extends ListPlayerView {
         params.height = maxHeight;
         setLayoutParams(params);
 
-        FrameLayout.LayoutParams coverLayoutParams = (FrameLayout.LayoutParams) cover.getLayoutParams();
+        FrameLayout.LayoutParams coverLayoutParams = (LayoutParams) cover.getLayoutParams();
         coverLayoutParams.width = (int) (widthPx / (heightPx * 1.0f / maxHeight));
         coverLayoutParams.height = maxHeight;
         coverLayoutParams.gravity = Gravity.CENTER;
         cover.setLayoutParams(coverLayoutParams);
     }
 
+    // TODO: 2020/5/9 重点考虑下这块的是否有问题 
     @Override
     public void setLayoutParams(ViewGroup.LayoutParams params) {
         if (mHeightPx > mWidthPx) {
             int layoutWidth = params.width;
             int layoutHeight = params.height;
             ViewGroup.LayoutParams coverLayoutParams = cover.getLayoutParams();
-            coverLayoutParams.width = (int) (mWidthPx / mHeightPx * 1.0f / layoutHeight);
+            coverLayoutParams.width = (int) (mWidthPx / (mHeightPx * 1.0f / layoutHeight));
             coverLayoutParams.height = layoutHeight;
 
             cover.setLayoutParams(coverLayoutParams);
@@ -79,7 +82,7 @@ public class FullScreenPlayerView extends ListPlayerView {
                 if (layoutParams != null && layoutParams.width > 0 && layoutParams.height > 0) {
                     float scaleX = coverLayoutParams.width * 1.0f / layoutParams.width;
                     float scaleY = coverLayoutParams.height * 1.0f / layoutParams.height;
-
+                    Log.e(TAG, "setLayoutParams: scaleX " + scaleX + " scaleY " + scaleY);
                     exoPlayerView.setScaleX(scaleX);
                     exoPlayerView.setScaleY(scaleY);
                 }
@@ -90,6 +93,7 @@ public class FullScreenPlayerView extends ListPlayerView {
 
     @Override
     public void onActive() {
+        Log.e(TAG, "onActive: FullScreenPlayerView ");
         PageListPlay pageListPlay = PageListPlayerManager.get(mCategory);
         PlayerView playerView = exoPlayerView; // pageListPlay.playerView;
         PlayerControlView controlView = pageListPlay.controlView;
@@ -97,7 +101,6 @@ public class FullScreenPlayerView extends ListPlayerView {
         if (playerView == null) {
             return;
         }
-
         // 主动关联播放器和exoplayerView
         pageListPlay.switchPlayerView(playerView, true);
         ViewParent parent = playerView.getParent();

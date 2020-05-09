@@ -70,7 +70,7 @@ public class ListPlayerView extends FrameLayout implements IPlayTarget, PlayerCo
         // 播放和暂停的按钮
         playerBtn = findViewById(R.id.play_btn);
         playerBtn.setOnClickListener((view) -> {
-            if (isPlaying) {
+            if (isPlaying()) {
                 inActive();
             } else {
                 onActive();
