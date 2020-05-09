@@ -107,7 +107,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     // 裁剪图片
-    implementation 'com.github.yalantis:ucrop:2.2.4'
+    implementation 'com.github.yalantis:ucrop:2.2.5'
 
     // 智能刷新库
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'

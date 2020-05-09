@@ -120,7 +120,8 @@ public class ChooseAvatarActivity extends AppCompatActivity {
                             @Override
                             public void accept(Boolean granted) throws Exception {
                                 if (granted) {
-                                    File imgPath = new File(Environment.getExternalStorageDirectory(), "PPDImages");
+                                    File rootFile = getExternalCacheDir();
+                                    File imgPath = new File(rootFile, "PPDImages");
                                     if (!imgPath.exists()) {
                                         imgPath.mkdir();
                                     }

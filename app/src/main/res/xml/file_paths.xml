@@ -2,16 +2,16 @@
 <paths>
     <external-path
         name="external_storage_root"
-        path="ppdImages" />
+        path="PPDImages" />
     <!-- 访问外部存储根目录下的所有文件   -->
     <external-path
         name="external_storage_root"
         path="." />
-<!--    版权声明：本文为CSDN博主「薛瑄」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。-->
-<!--    原文链接：https://blog.csdn.net/xx326664162/article/details/78298956-->
     <external-path
         name="Pictures"
         path="Pictures/camerademo" />
     <!--代表外部存储区域的根目录下的文件 Environment.getExternalStorageDirectory()/Pictures/camerademo目录-->
-<!--    <external-path name="Pictures" path="Pictures/camerademo" />-->
+    <external-path name="dcim_camera" path="DCIM/Camera/" />
 </paths>
+
+
