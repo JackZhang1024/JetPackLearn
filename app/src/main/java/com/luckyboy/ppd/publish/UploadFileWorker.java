@@ -9,7 +9,9 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.luckyboy.libcommon.utils.FileUploadManager;
+import com.luckyboy.libnetwork.ApiResponse;
+import com.luckyboy.libnetwork.ApiService;
+import com.luckyboy.ppd.core.model.OSSFile;
 
 public class UploadFileWorker extends Worker {
 
@@ -24,7 +26,10 @@ public class UploadFileWorker extends Worker {
     public Result doWork() {
         Data inputData = getInputData();
         String filePath = inputData.getString("file");
-        String fileUrl = FileUploadManager.upload(filePath);
+        Log.e(TAG, "doWork: uploadFilePath  "+filePath);
+        String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+        ApiResponse<OSSFile> response = ApiService.upload("/fileUploadOSS", filePath, fileName).responseType(OSSFile.class).execute();
+        String fileUrl = response.body.ossUrl;
         Log.e(TAG, "doWork: 上传阿里云存储服务器图片或者视频地址 " + fileUrl);
         if (TextUtils.isEmpty(fileUrl)) {
             return Result.failure();

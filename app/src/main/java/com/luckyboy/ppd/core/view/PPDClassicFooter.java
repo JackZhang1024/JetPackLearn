@@ -47,7 +47,7 @@ public class PPDClassicFooter extends InternalClassics<com.scwang.smartrefresh.l
     public PPDClassicFooter(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
 
-        View.inflate(context, R.layout.srl_classics_footer, this);
+        View.inflate(context, R.layout.ppd_srl_classics_footer, this);
 
         final View thisView = this;
         final View arrowView = mArrowView = thisView.findViewById(R.id.srl_classics_arrow);

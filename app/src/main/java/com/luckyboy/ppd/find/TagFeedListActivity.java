@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -27,6 +28,7 @@ import com.luckyboy.libcommon.extension.AbsPagedListAdapter;
 import com.luckyboy.libcommon.utils.PixUtils;
 import com.luckyboy.libcommon.utils.StatusBar;
 import com.luckyboy.libcommon.view.EmptyView;
+import com.luckyboy.ppd.core.MutablePageKeyedDataSource;
 import com.luckyboy.ppd.core.exoplayer.PageListPlayDetector;
 import com.luckyboy.ppd.core.exoplayer.PageListPlayerManager;
 import com.luckyboy.ppd.core.model.Feed;
@@ -40,6 +42,8 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.util.List;
 
 public class TagFeedListActivity extends AppCompatActivity implements View.OnClickListener, OnRefreshListener, OnLoadMoreListener {
 
@@ -127,7 +131,7 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
             recyclerView.setVisibility(View.VISIBLE);
         } else {
             emptyView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -220,8 +224,35 @@ public class TagFeedListActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        PagedList currentList = getAdapter().getCurrentList();
-        finishRefresh(currentList != null && currentList.size() > 0);
+        PagedList currentList = adapter.getCurrentList();
+        if (currentList == null || currentList.size() == 0){
+            finishRefresh(false);
+            return;
+        }
+        Feed feed = (Feed) currentList.get(currentList.size()-1);
+        tagFeedListViewModel.loadAfter(feed.id, new ItemKeyedDataSource.LoadCallback<Feed>() {
+            @Override
+            public void onResult(@NonNull List<Feed> data) {
+                PagedList.Config config = currentList.getConfig();
+                if (data != null) {
+                    if (data.size() > 0) {
+                        // 这里 咋们手动接管 分页数据加载的时候 使用MutableItemKeyedDataSource 也是可以的
+                        // 由于当且仅当 paging 不再帮我们分页的时候 我们才会接管 所以就不要ViewModel中
+                        // 创建的DataSource 继续工作了 使用使用 MutablePageKeyedDtaSource也是可以的
+                        MutablePageKeyedDataSource dataSource = new MutablePageKeyedDataSource();
+                        // 这里把列表上已经显示的先添加到dataSource.data中
+                        // 而后把本次分页回来的数据在添加到dataSource.dta中
+                        dataSource.data.addAll(currentList);
+                        dataSource.data.addAll(data);
+                        PagedList pagedList = dataSource.buildNewPagedList(config);
+                        Log.e(TAG, "onResult: onLoadMore-------");
+                        submitList(pagedList);
+                    } else {
+                        twinklingRefreshLayout.finishLoadMoreWithNoMoreData();
+                    }
+                }
+            }
+        });
     }
 
 }

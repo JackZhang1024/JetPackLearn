@@ -93,7 +93,7 @@ public class CaptureActivity extends AppCompatActivity {
             public void onClick() {
                 takingPicture = true;
                 File rootFile = Environment.getExternalStorageDirectory();
-                rootFile = getCacheDir();
+                rootFile = getExternalCacheDir();
                 //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".jpeg");
                 File file = new File(rootFile, System.currentTimeMillis() + ".jpeg");
                 mBinding.captureTips.setVisibility(View.INVISIBLE);
@@ -116,7 +116,7 @@ public class CaptureActivity extends AppCompatActivity {
             public void onLongClick() {
                 takingPicture = false;
                 File rootFile = Environment.getExternalStorageDirectory();
-                rootFile = getCacheDir();
+                rootFile = getExternalCacheDir();
                 File file = new File(rootFile, System.currentTimeMillis() + ".mp4");
                 //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".mp4");
                 videoCapture.startRecording(file, new VideoCapture.OnVideoSavedListener() {

@@ -1,8 +1,10 @@
 package com.luckyboy.ppd.find;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
@@ -17,12 +19,13 @@ import com.luckyboy.ppd.login.UserManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TagFeedListViewModel extends AbsViewModel<Feed> {
     private static final String TAG = "TagFeedListViewModel";
 
     private String feedType;
-
+    private AtomicBoolean loadAfter = new AtomicBoolean();
 
     public void setFeedType(String feedType) {
         this.feedType = feedType;
@@ -59,6 +62,9 @@ public class TagFeedListViewModel extends AbsViewModel<Feed> {
     }
 
     private void loadData(Integer feedId, ItemKeyedDataSource.LoadCallback<Feed> callback) {
+        if (feedId >0 ){
+            loadAfter.set(true);
+        }
         ApiResponse<List<Feed>> response = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("userId", UserManager.get() == null ? 0 : UserManager.get().getUserId())
                 .addParam("pageCount", 10)
@@ -72,9 +78,21 @@ public class TagFeedListViewModel extends AbsViewModel<Feed> {
         callback.onResult(result);
 
         if (feedId > 0) {
+            loadAfter.set(false);
             // 分页的情况 通知一下UI 本次加载是否有数据 方便UI 关闭上拉加载动画什么的
             ((MutableLiveData) getBoundaryPageData()).postValue(result.size() > 0);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    public void loadAfter(int id, ItemKeyedDataSource.LoadCallback<Feed> callback) {
+        if (loadAfter.get()) {
+            callback.onResult(Collections.emptyList());
+            return;
+        }
+        ArchTaskExecutor.getIOThreadExecutor().execute(() -> {
+            loadData(id, callback);
+        });
     }
 
 

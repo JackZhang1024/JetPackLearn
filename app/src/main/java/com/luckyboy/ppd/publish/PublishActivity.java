@@ -191,7 +191,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                 if (completedCount >= workInfos.size()) {
                     publishFeed();
                 } else {
-                    dismissLoading();
+                   // dismissLoading();
                 }
             }
         });

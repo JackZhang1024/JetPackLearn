@@ -61,29 +61,32 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
         PagedList<TagList> currentList = getAdapter().getCurrentList();
         long tagId = currentList == null ? 0 : currentList.get(currentList.size() - 1).tagId;
         Log.e(TAG, "onTwinkLoadMore: tagId " + tagId);
-        mViewModel.loadData(tagId, new ItemKeyedDataSource.LoadCallback() {
+        mViewModel.loadAfter(tagId, new ItemKeyedDataSource.LoadCallback() {
             @Override
             public void onResult(@NonNull List data) {
                 Log.e(TAG, "onResult: CurrentThreadName " + Thread.currentThread().getName() + " size  " + data.size());
-                if (data != null && data.size() > 0) {
-                    MutableItemKeyDataSource<Long, TagList> mutableItemKeyDataSource =
-                            new MutableItemKeyDataSource<Long, TagList>((ItemKeyedDataSource) mViewModel.getDataSource()) {
-                                @NonNull
-                                @Override
-                                public Long getKey(@NonNull TagList item) {
-                                    return item.tagId;
-                                }
-                            };
-                    mutableItemKeyDataSource.data.addAll(currentList);
-                    mutableItemKeyDataSource.data.addAll(data);
-                    PagedList<TagList> pagedList = mutableItemKeyDataSource.buildNewPagedList(currentList.getConfig());
-                    submitList(pagedList);
-                } else {
-                    finishRefresh(false);
+                if (data != null) {
+                    if (data.size() > 0) {
+                        MutableItemKeyDataSource<Long, TagList> mutableItemKeyDataSource =
+                                new MutableItemKeyDataSource<Long, TagList>((ItemKeyedDataSource) mViewModel.getDataSource()) {
+                                    @NonNull
+                                    @Override
+                                    public Long getKey(@NonNull TagList item) {
+                                        return item.tagId;
+                                    }
+                                };
+                        mutableItemKeyDataSource.data.addAll(currentList);
+                        mutableItemKeyDataSource.data.addAll(data);
+                        PagedList<TagList> pagedList = mutableItemKeyDataSource.buildNewPagedList(currentList.getConfig());
+                        submitList(pagedList);
+                    } else {
+                        finishWithNoMoreData();
+                    }
                 }
             }
         });
     }
+
 
     @Override
     public void onRefresh(RefreshLayout layout) {

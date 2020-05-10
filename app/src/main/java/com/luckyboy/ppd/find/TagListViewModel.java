@@ -1,5 +1,7 @@
 package com.luckyboy.ppd.find;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +12,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.luckyboy.libnetwork.ApiResponse;
 import com.luckyboy.libnetwork.ApiService;
 import com.luckyboy.ppd.core.AbsViewModel;
+import com.luckyboy.ppd.core.model.Feed;
 import com.luckyboy.ppd.core.model.TagList;
 import com.luckyboy.ppd.login.UserManager;
 
@@ -89,6 +92,16 @@ public class TagListViewModel extends AbsViewModel<TagList> {
 
     }
 
+    @SuppressLint("RestrictedApi")
+    public void loadAfter(long id, ItemKeyedDataSource.LoadCallback callback) {
+        if (loadAfter.get()) {
+            callback.onResult(Collections.emptyList());
+            return;
+        }
+        ArchTaskExecutor.getIOThreadExecutor().execute(() -> {
+            loadData(id, callback);
+        });
+    }
 
     public void loadData(long tagId, ItemKeyedDataSource.LoadCallback callback) {
         if (tagId <= 0 || loadAfter.get()) {
